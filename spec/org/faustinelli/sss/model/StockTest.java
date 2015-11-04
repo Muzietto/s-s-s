@@ -7,9 +7,10 @@ public class StockTest extends TestCase {
 
     public void testCreateStock() throws Exception {
 
-        Stock fiat = Stock.instance("FIAT", Stock.Type.PREFERRED);
+        Stock fiat = Stock.instance("Fiat", Stock.Type.PREFERRED);
         assertNotNull(fiat);
-        assertEquals("FIAT - PREFERRED", fiat.toString());
+        assertEquals("FIA - PREFERRED", fiat.toString());
+        assertEquals(Amount.instance(100),fiat.parValue());
 
     }
 
