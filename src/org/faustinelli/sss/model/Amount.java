@@ -29,9 +29,19 @@ public class Amount {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Amount
-                && ((Amount) obj).currency().equals(currency)
-                && ((Amount) obj).value().equals(value);
+        try {
+            Amount amm = ((Amount) obj);
+            return amm.currency().equals(currency)
+                    && amm.value().equals(value);
+
+        } catch (Exception exc) {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return value + " " + currency;
     }
 
     public enum Currency {

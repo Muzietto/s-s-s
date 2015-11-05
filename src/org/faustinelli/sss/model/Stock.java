@@ -2,12 +2,12 @@ package org.faustinelli.sss.model;
 
 public class Stock {
 
-    private String symbol;
-    private Stock.Type type;
-    private Amount parValue;
+    private final String symbol;
+    private final Stock.Type type;
+    private final Amount parValue;
 
     private Stock(String aName, Stock.Type aType, Amount aParValue) {
-        symbol = aName.substring(0,3).toUpperCase();
+        symbol = aName.substring(0, 3).toUpperCase();
         type = aType;
         parValue = aParValue;
     }
@@ -20,6 +20,10 @@ public class Stock {
         return new Stock(name, type);
     }
 
+    public static Dividend dividend(Stock aStock, Amount aDividend) {
+        return aStock.new Dividend(aStock, aDividend);
+    }
+
     public Amount parValue() {
         return Amount.instance(parValue.value());
     }
@@ -29,7 +33,23 @@ public class Stock {
         return symbol + " - " + type;
     }
 
+    // TODO add enum method for fixed dividend
     public enum Type {
         COMMON, PREFERRED
+    }
+
+    public class Dividend {
+        Stock stock;
+        private Amount dividend;
+
+        private Dividend(Stock aStock, Amount aDividend) {
+            dividend = aDividend;
+            stock = aStock;
+        }
+
+        @Override
+        public String toString() {
+            return dividend.toString() + " : " + stock.toString();
+        }
     }
 }

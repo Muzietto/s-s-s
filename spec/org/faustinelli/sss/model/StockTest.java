@@ -14,4 +14,16 @@ public class StockTest extends TestCase {
 
     }
 
+    public void testAmountDividend() throws Exception {
+
+        Amount amm = Amount.instance(12);
+        assertEquals("12 PENNY", amm.toString());
+
+        Stock abc = Stock.instance("abc", Stock.Type.COMMON);
+        Stock.Dividend divv = Stock.dividend(abc, amm);
+        assertEquals("12 PENNY : ABC - COMMON", divv.toString());
+
+    }
+
+    // TODO make test for dividends in preferred stock
 }
