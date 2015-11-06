@@ -27,6 +27,10 @@ public class Amount {
         return new Amount(aValue);
     }
 
+    public static Amount instance(Integer aValue, Currency aCurrency) {
+        return new Amount(aValue, aCurrency);
+    }
+
     @Override
     public boolean equals(Object obj) {
         try {
