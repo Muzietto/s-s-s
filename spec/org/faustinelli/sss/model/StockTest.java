@@ -25,5 +25,7 @@ public class StockTest extends TestCase {
 
     }
 
+
+
     // TODO make test for dividends in preferred stock
 }

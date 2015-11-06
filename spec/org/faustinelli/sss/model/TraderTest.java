@@ -31,11 +31,16 @@ public class TraderTest extends TestCase {
 
     public void testTickerPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(55));
+        Stock abc = Stock.instance("ABC", Stock.Type.COMMON);
+        this.trader.trade(abc, Trade.Indicator.BUY, Amount.instance(55));
         this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85));
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(65));
+        this.trader.trade(abc, Trade.Indicator.SELL, Amount.instance(45));
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25));
         this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35));
 
-        //assertEquals("35 PENNY",trader.tickerPrice(xyz));
+        assertEquals("35 PENNY",trader.tickerPrice(xyz));
+        assertEquals("45 PENNY",trader.tickerPrice(abc));
 
     }
 

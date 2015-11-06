@@ -33,6 +33,11 @@ public class Stock {
         return symbol + " - " + type;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     // TODO add enum method for fixed dividend
     public enum Type {
         COMMON, PREFERRED
