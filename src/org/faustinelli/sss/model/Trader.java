@@ -1,6 +1,8 @@
 package org.faustinelli.sss.model;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 
 public class Trader {
