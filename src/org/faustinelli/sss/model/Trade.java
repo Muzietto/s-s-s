@@ -1,19 +1,20 @@
 package org.faustinelli.sss.model;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class Trade {
 
     private final Stock stock;
     private final Indicator indicator;
     private final Amount price;
-    private final LocalDateTime timestamp;
+    private final ZonedDateTime timestamp;
 
-    private Trade(Stock aStock, Indicator anIndicator, Amount aPrice) {
+    private Trade(Stock aStock, Indicator anIndicator, Amount aPrice, ZonedDateTime aTimestamp) {
         stock = aStock;
         indicator = anIndicator;
         price = aPrice;
-        timestamp = LocalDateTime.now();
+        timestamp = aTimestamp;
     }
 
     public Stock stock() {
@@ -24,14 +25,13 @@ public class Trade {
         return price;
     }
 
-    public LocalDateTime timestamp() {
+    public ZonedDateTime timestamp() {
         return timestamp;
     }
 
-    public static Trade instance(Stock aStock, Indicator anIndicator, Amount aPrice) {
-        return new Trade(aStock, anIndicator, aPrice);
+    public static Trade instance(Stock aStock, Indicator anIndicator, Amount aPrice, ZonedDateTime aTimestamp) {
+        return new Trade(aStock, anIndicator, aPrice, aTimestamp);
     }
-
 
     public enum Indicator {
         BUY, SELL

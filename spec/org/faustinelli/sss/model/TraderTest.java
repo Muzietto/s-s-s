@@ -2,8 +2,9 @@ package org.faustinelli.sss.model;
 
 import junit.framework.TestCase;
 
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 public class TraderTest extends TestCase {
 
@@ -19,7 +20,12 @@ public class TraderTest extends TestCase {
             }
         });
 
-        this.trader = Trader.instance(this.trades);
+        this.trader = Trader.instance(this.trades, new TradingClock() {
+            @Override
+            public ZonedDateTime time() {
+                return null;
+            }
+        });
     }
 
     public void testTrade() throws Exception {
@@ -50,7 +56,33 @@ public class TraderTest extends TestCase {
         this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85));
         this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35));
 
-        assertEquals(null,trader.stockPrice(xyz));
+        assertEquals(null, trader.stockPrice(xyz));
+
+    }
+
+    public void testXXXXX() throws Exception {
+        Set luigi = new TreeSet<ZonedDateTime>(new Comparator<ZonedDateTime>() {
+            @Override
+            public int compare(ZonedDateTime o1, ZonedDateTime o2) {
+                return o2.compareTo(o1);
+            }
+        });
+
+        Calendar cal = Calendar.getInstance();
+        ZonedDateTime oggi = ZonedDateTime.now();
+        System.out.println("oggi=" + oggi);
+        ZonedDateTime ieri = oggi.minusDays(1);
+        System.out.println("ieri=" + ieri);
+        ZonedDateTime domani = oggi.plusDays(1);
+        System.out.println("domani=" + domani);
+
+        luigi.add(oggi);
+        luigi.add(ieri);
+        luigi.add(domani);
+
+        ZonedDateTime first = (ZonedDateTime) luigi.stream().findFirst().get();
+
+        assertEquals(domani, first);
 
     }
 }
