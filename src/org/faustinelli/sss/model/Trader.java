@@ -1,7 +1,7 @@
 package org.faustinelli.sss.model;
 
-import java.time.Clock;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
@@ -49,7 +49,12 @@ public class Trader {
         }).findFirst().get().price();
     }
 
-    public Amount stockPrice(Stock stock) {
-        return null;
+    public Trade stockPrice(Stock stock) {
+        return trades.stream().filter(new Predicate<Trade>() {
+            @Override
+            public boolean test(Trade trade) {
+                return trade.stock().equals(stock);
+            }
+        }).reduce(null,null);
     }
 }

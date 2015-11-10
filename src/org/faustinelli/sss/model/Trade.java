@@ -2,6 +2,7 @@ package org.faustinelli.sss.model;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.AbstractMap;
 
 public class Trade {
 
@@ -36,5 +37,12 @@ public class Trade {
     public enum Indicator {
         BUY, SELL
     }
+
+/*    public class PQ<Amount, Integer> extends AbstractMap.SimpleEntry<Amount, Integer> {
+        public PQ() {
+            return null;
+        }
+    }
+  */
 }
 
