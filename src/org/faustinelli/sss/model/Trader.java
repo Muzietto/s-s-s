@@ -33,6 +33,10 @@ public class Trader {
         return new Trader(someTrades, aClock);
     }
 
+    private static Fraction<Amount, Amount> stockPriceInstance(Amount numerator, Integer denominator) {
+        return new Fraction(numerator, denominator);
+    }
+
     public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice, Integer numShares) {
         Trade trade = Trade.instance(aStock, anIndicator, aPrice, numShares, clock.time());
         trades.add(trade);

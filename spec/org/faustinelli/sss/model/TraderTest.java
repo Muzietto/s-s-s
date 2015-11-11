@@ -41,6 +41,7 @@ public class TraderTest extends TestCase {
         assertEquals(1, this.trades.size());
     }
 
+
     public void testTickerPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
         Stock abc = Stock.instance("ABC", Stock.Type.COMMON);
