@@ -2,7 +2,6 @@ package org.faustinelli.sss.model;
 
 import junit.framework.TestCase;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -31,26 +30,31 @@ public class TraderTest extends TestCase {
     }
 
     public void testTrade() throws Exception {
-
-        Trade result = trader.trade(Stock.instance("XYZ", Stock.Type.PREFERRED), Trade.Indicator.BUY, Amount.instance(55));
+        Trade result = trader.trade(
+                Stock.instance("XYZ", Stock.Type.PREFERRED),
+                Trade.Indicator.BUY,
+                Amount.instance(55),
+                12);
         assertEquals("XYZ - PREFERRED", result.stock().toString());
+        assertEquals("55 PENNY", result.price().toString());
+        assertEquals(new Integer(12), result.quantity());
         assertEquals(1, this.trades.size());
     }
 
     public void testTickerPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
         Stock abc = Stock.instance("ABC", Stock.Type.COMMON);
-        this.trader.trade(abc, Trade.Indicator.BUY, Amount.instance(55));
+        this.trader.trade(abc, Trade.Indicator.BUY, Amount.instance(55), 13);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85));
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85), 14);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(65));
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(65), 15);
         Thread.sleep(10);
-        this.trader.trade(abc, Trade.Indicator.SELL, Amount.instance(45));
+        this.trader.trade(abc, Trade.Indicator.SELL, Amount.instance(45), 16);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25));
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25), 17);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35));
+        this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35), 18);
 
         assertEquals(Amount.instance(35), trader.tickerPrice(xyz));
         assertEquals(Amount.instance(45), trader.tickerPrice(abc));
@@ -59,12 +63,11 @@ public class TraderTest extends TestCase {
 
     public void testStockPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(55));
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85));
-        this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35));
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 10);
+        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 30);
+        this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(30), 10);
 
-        //assertEquals(null, trader.stockPrice(xyz));
-
+        assertEquals(null/*Amount.instance(17)*/, trader.stockPrice(xyz));
     }
 
     public void testOrderedSet() throws Exception {

@@ -8,13 +8,13 @@ public class Trade {
 
     private final Stock stock;
     private final Indicator indicator;
-    private final Amount price;
+    private final PriceQuantity priceQuantity;
     private final ZonedDateTime timestamp;
 
-    private Trade(Stock aStock, Indicator anIndicator, Amount aPrice, ZonedDateTime aTimestamp) {
+    private Trade(Stock aStock, Indicator anIndicator, Amount aPrice, Integer numShares, ZonedDateTime aTimestamp) {
         stock = aStock;
         indicator = anIndicator;
-        price = aPrice;
+        priceQuantity = new PriceQuantity(aPrice, numShares);
         timestamp = aTimestamp;
     }
 
@@ -22,27 +22,47 @@ public class Trade {
         return stock;
     }
 
+    public PriceQuantity<Amount, Integer> priceQuantity() {
+        return priceQuantity;
+    }
+
     public Amount price() {
-        return price;
+        return (Amount) priceQuantity.getPrice();
+    }
+
+    public Integer quantity() {
+        return (Integer) priceQuantity.getQuantity();
     }
 
     public ZonedDateTime timestamp() {
         return timestamp;
     }
 
-    public static Trade instance(Stock aStock, Indicator anIndicator, Amount aPrice, ZonedDateTime aTimestamp) {
-        return new Trade(aStock, anIndicator, aPrice, aTimestamp);
+    public static Trade instance(Stock aStock, Indicator anIndicator, Amount aPrice, Integer numShares, ZonedDateTime aTimestamp) {
+        return new Trade(aStock, anIndicator, aPrice, numShares, aTimestamp);
+    }
+
+    public static PriceQuantity<Amount, Integer> priceQuantity(Amount aPrice, Integer numShares) {
+        return new PriceQuantity<Amount, Integer>(aPrice, numShares);
     }
 
     public enum Indicator {
         BUY, SELL
     }
 
-/*    public class PQ<Amount, Integer> extends AbstractMap.SimpleEntry<Amount, Integer> {
-        public PQ() {
-            return null;
+    public static class PriceQuantity<Amount, Integer> extends AbstractMap.SimpleImmutableEntry<Amount, Integer> {
+
+        private PriceQuantity(Amount aPrice, Integer numShares) {
+            super(aPrice, numShares);
+        }
+
+        public Amount getPrice() {
+            return getKey();
+        }
+
+        public Integer getQuantity() {
+            return getValue();
         }
     }
-  */
 }
 

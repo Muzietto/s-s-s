@@ -1,7 +1,6 @@
 package org.faustinelli.sss.model;
 
 import java.util.Comparator;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
@@ -34,27 +33,28 @@ public class Trader {
         return new Trader(someTrades, aClock);
     }
 
-    public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice) {
-        Trade trade = Trade.instance(aStock, anIndicator, aPrice, clock.time());
+    public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice, Integer numShares) {
+        Trade trade = Trade.instance(aStock, anIndicator, aPrice, numShares, clock.time());
         trades.add(trade);
         return trade;
     }
 
     public Amount tickerPrice(Stock stock) {
-        return trades.stream().filter(new Predicate<Trade>() {
-            @Override
-            public boolean test(Trade trade) {
-                return trade.stock().equals(stock);
-            }
-        }).findFirst().get().price();
+        return trades.stream()
+                .filter(trade -> trade.stock().equals(stock))
+                .findFirst()
+                .get()
+                .price();
     }
 
-    public Trade stockPrice(Stock stock) {
-        return trades.stream().filter(new Predicate<Trade>() {
-            @Override
-            public boolean test(Trade trade) {
-                return trade.stock().equals(stock);
-            }
-        }).reduce(null,null);
+    public Amount stockPrice(Stock stock) {
+        return null;
+        /*
+        return trades.stream()
+                .filter(trade -> trade.stock().equals(stock))
+                .map((Trade t) -> t.priceQuantity())
+                .reduce(Trade.priceQuantity(Amount.ZERO_PENNIES, 0),
+                        (acc, curr) -> Trade.priceQuantity());
+*/
     }
 }

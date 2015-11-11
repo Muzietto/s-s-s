@@ -1,6 +1,7 @@
 package org.faustinelli.sss.model;
 
 public class Amount {
+    public static final Amount ZERO_PENNIES = Amount.instance(0);
     private final Currency currency;
     private final Integer value;
     private Integer digits;

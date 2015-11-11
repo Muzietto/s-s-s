@@ -1,9 +1,6 @@
 package org.faustinelli.sss.model;
 
-import java.security.Timestamp;
-import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class StockMarket {
 
@@ -18,9 +15,9 @@ public class StockMarket {
         return INSTANCE;
     }
 
-    public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice) {
+    public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice, Integer numShares) {
         stocks.add(aStock);
-        return trader.trade(aStock, anIndicator, aPrice);
+        return trader.trade(aStock, anIndicator, aPrice, numShares);
     }
 
     public Amount tickerPrice(Stock stock) {
