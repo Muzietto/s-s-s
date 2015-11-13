@@ -62,13 +62,16 @@ public class TraderTest extends TestCase {
 
     }
 
+    /*
+      TODO - succeeds only when executed alone. Make execution of all tests sequential.
+     */
     public void testStockPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
         this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 10);
         this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 30);
         this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(30), 10);
 
-        assertEquals(null/*Amount.instance(17)*/, trader.stockPrice(xyz));
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
     }
 
     public void testOrderedSet() throws Exception {
