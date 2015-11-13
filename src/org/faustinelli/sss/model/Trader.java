@@ -3,6 +3,8 @@ package org.faustinelli.sss.model;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 
 public class Trader {
@@ -52,13 +54,39 @@ public class Trader {
     }
 
     public Amount stockPrice(Stock stock) {
-        return null;
-        /*
-        return trades.stream()
+
+        Fraction<Amount, Integer> result = trades.stream()
                 .filter(trade -> trade.stock().equals(stock))
                 .map((Trade t) -> t.priceQuantity())
-                .reduce(Trade.priceQuantity(Amount.ZERO_PENNIES, 0),
-                        (acc, curr) -> Trade.priceQuantity());
-*/
+                .reduce(new Fraction(Amount.ZERO_PENNIES, 0),
+                        new BiFunction<Fraction<Amount, Integer>, Trade.PriceQuantity, Fraction<Amount, Integer>>() {
+                            @Override
+                            public Fraction apply(Fraction<Amount, Integer> acc, Trade.PriceQuantity curr) {
+                                return new Fraction<Amount, Integer>(
+                                        Amount.instance(
+                                                curr.getPrice().value() * curr.getQuantity() + acc.numerator().value(),
+                                                acc.numerator().currency()
+                                        ),
+                                        acc.denominator() + curr.getQuantity()
+                                );
+                            }
+                        },
+                        new BinaryOperator<Fraction<Amount, Integer>>() {
+                            @Override
+                            public Fraction<Amount, Integer> apply(Fraction<Amount, Integer> fr1, Fraction<Amount, Integer> fr2) {
+                                return new Fraction<Amount, Integer>(
+                                        Amount.instance(fr1.numerator().value() + fr2.numerator().value(),
+                                                fr1.numerator().currency()), fr1.denominator() + fr2.denominator()
+                                );
+                            }
+                        }
+                );
+
+        try {
+
+            return Amount.instance(result.numerator().value() / result.denominator(), result.numerator().currency());
+        } catch (Exception exc) {
+            return Amount.instance(0, result.numerator().currency());
+        }
     }
 }
