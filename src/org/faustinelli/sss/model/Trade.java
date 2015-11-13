@@ -22,7 +22,7 @@ public class Trade {
         return stock;
     }
 
-    public PriceQuantity<Amount, Integer> priceQuantity() {
+    public PriceQuantity priceQuantity() {
         return priceQuantity;
     }
 
@@ -42,26 +42,26 @@ public class Trade {
         return new Trade(aStock, anIndicator, aPrice, numShares, aTimestamp);
     }
 
-    public static PriceQuantity<Amount, Integer> priceQuantity(Amount aPrice, Integer numShares) {
-        return new PriceQuantity<Amount, Integer>(aPrice, numShares);
+    public static PriceQuantity priceQuantity(Amount aPrice, Integer numShares) {
+        return new PriceQuantity(aPrice, numShares);
     }
 
     public enum Indicator {
         BUY, SELL
     }
 
-    public static class PriceQuantity<Amount, Integer> extends AbstractMap.SimpleImmutableEntry<Amount, Integer> {
+    public static class PriceQuantity extends AbstractMap.SimpleImmutableEntry<Amount, Integer> {
 
         private PriceQuantity(Amount aPrice, Integer numShares) {
             super(aPrice, numShares);
         }
 
         public Amount getPrice() {
-            return getKey();
+            return (Amount) getKey();
         }
 
         public Integer getQuantity() {
-            return getValue();
+            return (Integer) getValue();
         }
     }
 }
