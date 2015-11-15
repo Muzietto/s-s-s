@@ -54,7 +54,6 @@ public class TraderTest extends TestCase {
 
         assertEquals(Amount.instance(35), trader.tickerPrice(xyz));
         assertEquals(Amount.instance(45), trader.tickerPrice(abc));
-
     }
 
     public void testStockPrice() throws Exception {
@@ -67,14 +66,28 @@ public class TraderTest extends TestCase {
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
         assertEquals(Amount.instance(17), trader.stockPrice(xyz));
 
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(10), trader.stockPrice(abc));
+
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
         assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(10), trader.stockPrice(abc));
+
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(20), 1);
+        assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(15), trader.stockPrice(abc));
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(15), 2);
         assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(15), trader.stockPrice(abc));
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 3);
         assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(13), trader.stockPrice(abc));
     }
 
     public void testOrderedSet() throws Exception {
