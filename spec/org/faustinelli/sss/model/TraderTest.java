@@ -90,6 +90,61 @@ public class TraderTest extends TestCase {
         assertEquals(Amount.instance(13), trader.stockPrice(abc));
     }
 
+    public void testTimedStockPrice() throws Exception {
+
+        Trader trader15Minutes1SecondAgo = Trader.instance(this.trades, new TradingClock() {
+            @Override
+            public ZonedDateTime time() {
+                ZonedDateTime now = ZonedDateTime.now().minusMinutes(15).minusSeconds(1);
+                System.out.println(now);
+                return now;
+            }
+        });
+        Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
+        Stock abc = Stock.instance("ABC", Stock.Type.PREFERRED);
+
+        trader15Minutes1SecondAgo.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 2);
+        trader15Minutes1SecondAgo.trade(abc, Trade.Indicator.BUY, Amount.instance(20), 2);
+        assertEquals(Amount.instance(0), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(0), trader.stockPrice(abc));
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 2);
+        assertEquals(Amount.instance(20), trader.stockPrice(xyz));
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
+        trader15Minutes1SecondAgo.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(10), 1);
+        trader15Minutes1SecondAgo.trade(abc, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(10), trader.stockPrice(abc));
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
+        trader15Minutes1SecondAgo.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(10), trader.stockPrice(abc));
+
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(20), 1);
+        trader15Minutes1SecondAgo.trade(abc, Trade.Indicator.BUY, Amount.instance(20), 1);
+        assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(15), trader.stockPrice(abc));
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(15), 2);
+        trader15Minutes1SecondAgo.trade(xyz, Trade.Indicator.BUY, Amount.instance(15), 2);
+        assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(15), trader.stockPrice(abc));
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 3);
+        trader15Minutes1SecondAgo.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 3);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(10), 1);
+        trader15Minutes1SecondAgo.trade(abc, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+        assertEquals(Amount.instance(13), trader.stockPrice(abc));
+    }
+
     public void testOrderedSet() throws Exception {
         Set orderedSet = new TreeSet<ZonedDateTime>(new Comparator<ZonedDateTime>() {
             @Override
