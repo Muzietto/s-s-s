@@ -62,9 +62,6 @@ public class TraderTest extends TestCase {
 
     }
 
-    /*
-      TODO - succeeds only when executed alone. Make execution of all tests sequential.
-     */
     public void testStockPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
         Stock abc = Stock.instance("ABC", Stock.Type.PREFERRED);
