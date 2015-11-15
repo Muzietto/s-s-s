@@ -12,14 +12,14 @@ public class TraderTest extends TestCase {
     private Trader trader;
 
     public void setUp() throws Exception {
-        this.trades = new TreeSet<Trade>(new Comparator<Trade>() {
+        trades = new TreeSet<Trade>(new Comparator<Trade>() {
             @Override
             public int compare(Trade t1, Trade t2) {
                 return t2.timestamp().compareTo(t1.timestamp());
             }
         });
 
-        this.trader = Trader.instance(this.trades, new TradingClock() {
+        trader = Trader.instance(this.trades, new TradingClock() {
             @Override
             public ZonedDateTime time() {
                 ZonedDateTime now = ZonedDateTime.now();
@@ -45,17 +45,17 @@ public class TraderTest extends TestCase {
     public void testTickerPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
         Stock abc = Stock.instance("ABC", Stock.Type.COMMON);
-        this.trader.trade(abc, Trade.Indicator.BUY, Amount.instance(55), 13);
+        trader.trade(abc, Trade.Indicator.BUY, Amount.instance(55), 13);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85), 14);
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85), 14);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(65), 15);
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(65), 15);
         Thread.sleep(10);
-        this.trader.trade(abc, Trade.Indicator.SELL, Amount.instance(45), 16);
+        trader.trade(abc, Trade.Indicator.SELL, Amount.instance(45), 16);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25), 17);
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25), 17);
         Thread.sleep(10);
-        this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35), 18);
+        trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35), 18);
 
         assertEquals(Amount.instance(35), trader.tickerPrice(xyz));
         assertEquals(Amount.instance(45), trader.tickerPrice(abc));
@@ -67,10 +67,25 @@ public class TraderTest extends TestCase {
      */
     public void testStockPrice() throws Exception {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 10);
-        this.trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 30);
-        this.trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(30), 10);
+        Stock abc = Stock.instance("ABC", Stock.Type.PREFERRED);
 
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 2);
+        assertEquals(Amount.instance(20), trader.stockPrice(xyz));
+        Thread.sleep(10);
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(17), trader.stockPrice(xyz));
+        Thread.sleep(10);
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
+        assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        Thread.sleep(10);
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(15), 2);
+        assertEquals(Amount.instance(15), trader.stockPrice(xyz));
+        Thread.sleep(10);
+
+        trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 3);
         assertEquals(Amount.instance(17), trader.stockPrice(xyz));
     }
 
@@ -97,6 +112,5 @@ public class TraderTest extends TestCase {
         ZonedDateTime first = (ZonedDateTime) orderedSet.stream().findFirst().get();
 
         assertEquals(domani, first);
-
     }
 }
