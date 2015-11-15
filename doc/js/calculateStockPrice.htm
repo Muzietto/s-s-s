@@ -1,0 +1,34 @@
+﻿<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <title>stock price calc</title>
+
+        <script type="text/javascript">
+          // e.g. [[price,qty],[10,10],[20,10]]
+          
+          var trades = [];
+          var stockPrice = null;
+          
+          function calc() {
+            result = trades.reduce(function(acc,curr){
+              var currPrice = curr[0];
+              var currQty = curr[1];
+              var currPriceQty = currPrice * currQty;
+              var priceQtys = acc[0];
+              var qtys = acc[1];
+              
+              return [currPriceQty + priceQtys,currQty + qtys];
+              
+            },[0,0]);
+            stockPrice = (result[1]) ? result[0]/result[1] : null;
+            console.log(stockPrice + ' <- ' + JSON.stringify(trades));
+          }
+        </script>
+    </head>
+    <body>
+        <h1 style="margin-left:20px;">stock price console calculator</h1>
+        <div id="mocha"></div>
+    </body>
+</html>
+ 
