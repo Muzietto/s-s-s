@@ -40,7 +40,9 @@ public class Trader {
 
     public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice, Integer numShares) {
         Trade trade = Trade.instance(aStock, anIndicator, aPrice, numShares, clock.time());
-        trades.add(trade);
+        while (!trades.add(trade)) {
+            trade = Trade.instance(aStock, anIndicator, aPrice, numShares, trade.timestamp().plusNanos(1000000));
+        };
         return trade;
     }
 
