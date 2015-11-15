@@ -46,15 +46,10 @@ public class TraderTest extends TestCase {
         Stock xyz = Stock.instance("XYZ", Stock.Type.PREFERRED);
         Stock abc = Stock.instance("ABC", Stock.Type.COMMON);
         trader.trade(abc, Trade.Indicator.BUY, Amount.instance(55), 13);
-        Thread.sleep(10);
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(85), 14);
-        Thread.sleep(10);
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(65), 15);
-        Thread.sleep(10);
         trader.trade(abc, Trade.Indicator.SELL, Amount.instance(45), 16);
-        Thread.sleep(10);
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25), 17);
-        Thread.sleep(10);
         trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35), 18);
 
         assertEquals(Amount.instance(35), trader.tickerPrice(xyz));
@@ -68,19 +63,15 @@ public class TraderTest extends TestCase {
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 2);
         assertEquals(Amount.instance(20), trader.stockPrice(xyz));
-        Thread.sleep(10);
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
         assertEquals(Amount.instance(17), trader.stockPrice(xyz));
-        Thread.sleep(10);
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(10), 1);
         assertEquals(Amount.instance(15), trader.stockPrice(xyz));
-        Thread.sleep(10);
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(15), 2);
         assertEquals(Amount.instance(15), trader.stockPrice(xyz));
-        Thread.sleep(10);
 
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(20), 3);
         assertEquals(Amount.instance(17), trader.stockPrice(xyz));
@@ -95,19 +86,19 @@ public class TraderTest extends TestCase {
         });
 
         Calendar cal = Calendar.getInstance();
-        ZonedDateTime oggi = ZonedDateTime.now();
-        System.out.println("oggi=" + oggi);
-        ZonedDateTime ieri = oggi.minusDays(1);
-        System.out.println("ieri=" + ieri);
-        ZonedDateTime domani = oggi.plusDays(1);
-        System.out.println("domani=" + domani);
+        ZonedDateTime today = ZonedDateTime.now();
+        System.out.println("today=" + today);
+        ZonedDateTime yesterday = today.minusDays(1);
+        System.out.println("yesterday=" + yesterday);
+        ZonedDateTime tomorrow = today.plusDays(1);
+        System.out.println("tomorrow=" + tomorrow);
 
-        orderedSet.add(oggi);
-        orderedSet.add(ieri);
-        orderedSet.add(domani);
+        orderedSet.add(today);
+        orderedSet.add(yesterday);
+        orderedSet.add(tomorrow);
 
         ZonedDateTime first = (ZonedDateTime) orderedSet.stream().findFirst().get();
 
-        assertEquals(domani, first);
+        assertEquals(tomorrow, first);
     }
 }
