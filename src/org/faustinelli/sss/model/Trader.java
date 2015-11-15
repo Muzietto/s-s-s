@@ -1,5 +1,6 @@
 package org.faustinelli.sss.model;
 
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -57,7 +58,9 @@ public class Trader {
     public Amount stockPrice(Stock stock) {
 
         Fraction<Amount, Integer> result = trades.stream()
-                .filter(trade -> trade.stock().equals(stock))
+                .filter(trade ->
+                        trade.stock().equals(stock)
+                                && (trade.timestamp().plusMinutes(15).compareTo(ZonedDateTime.now()) >= 0))
                 .map((Trade t) -> t.priceQuantity())
                 .reduce(new Fraction(Amount.ZERO_PENNIES, 0),
                         new BiFunction<Fraction<Amount, Integer>, Trade.PriceQuantity, Fraction<Amount, Integer>>() {
