@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
-import java.util.function.Predicate;
 
 public class Trader {
 
@@ -84,7 +83,10 @@ public class Trader {
 
         try {
 
-            return Amount.instance(result.numerator().value() / result.denominator(), result.numerator().currency());
+            int priceQtys = result.numerator().value();
+            double qtys = (double)result.denominator();
+
+            return Amount.instance((int) Math.round(priceQtys / qtys), result.numerator().currency());
         } catch (Exception exc) {
             return Amount.instance(0, result.numerator().currency());
         }
