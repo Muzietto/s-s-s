@@ -35,7 +35,12 @@ public class Stock {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        try {
+            Stock other = (Stock) obj;
+            return this.symbol.equals(other.symbol) && this.type.equals(other.type);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // TODO add enum method for fixed dividend
