@@ -14,6 +14,15 @@ public class Trader {
     private TradingClock clock;
     private final Set<Trade> trades;
 
+    private Trader() {
+        this(new TradingClock() {
+            @Override
+            public ZonedDateTime time() {
+                return ZonedDateTime.now();
+            }
+        });
+    }
+
     private Trader(TradingClock aClock) {
         this(new TreeSet<Trade>(new Comparator<Trade>() {
             @Override
@@ -27,6 +36,10 @@ public class Trader {
     private Trader(Set someTrades, TradingClock aClock) {
         trades = someTrades;
         clock = aClock;
+    }
+
+    public static Trader instance() {
+        return new Trader();
     }
 
     public static Trader instance(TradingClock clock) {
@@ -98,4 +111,5 @@ public class Trader {
             return Amount.instance(0, result.numerator().currency());
         }
     }
+
 }
