@@ -4,23 +4,30 @@ import java.util.Optional;
 
 public class Stock {
 
+    public static Dividend NULL_DIVIDEND = dividend(Stock.common("___", Amount.ZERO_PENNIES), Amount.ZERO_PENNIES);
+
     private final String symbol;
     private final Stock.Type type;
     private final Amount parValue;
-    private final Integer fixedDividendPc = null;
+    private final Integer fixedDividendPc;
 
-    private Stock(String aName, Stock.Type aType, Amount aParValue) {
+    private Stock(String aName, Stock.Type aType, Amount aParValue, Integer aFixedDividendPc) {
         symbol = aName.substring(0, 3).toUpperCase();
         type = aType;
         parValue = aParValue;
-    }
-
-    private Stock(String aName, Stock.Type aType) {
-        this(aName, aType, Amount.instance(100));
+        fixedDividendPc = aFixedDividendPc;
     }
 
     public static Stock instance(String name, Stock.Type type) {
-        return new Stock(name, type);
+        return new Stock(name, type, Amount.instance(100), new Integer(2));
+    }
+
+    public static Stock common(String name, Amount parValue) {
+        return new Stock(name, Type.COMMON, parValue, null);
+    }
+
+    public static Stock preferred(String name, Amount parValue, Integer fixedDividendPc) {
+        return new Stock(name, Type.PREFERRED, parValue, fixedDividendPc);
     }
 
     public static Dividend dividend(Stock aStock, Amount aDividend) {
@@ -28,7 +35,7 @@ public class Stock {
     }
 
     public Optional<Dividend> dividend() {
-        return this.type.dividend(this).flatMap(null);
+        return this.type.dividend(this).flatMap(amount -> Optional.of(new Dividend(this, amount)));
     }
 
     public Amount parValue() {
@@ -54,7 +61,6 @@ public class Stock {
         }
     }
 
-    // TODO add enum method for fixed dividend
     public enum Type {
         COMMON {
             @Override
@@ -73,6 +79,7 @@ public class Stock {
     }
 
     public class Dividend {
+
         private Stock stock;
         private Amount dividend;
 
@@ -84,6 +91,16 @@ public class Stock {
         @Override
         public String toString() {
             return dividend.toString() + " : " + stock.toString();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            try {
+                Dividend other = (Dividend) obj;
+                return this.stock.equals(other.stock) && this.dividend.equals(other.dividend);
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
 }
