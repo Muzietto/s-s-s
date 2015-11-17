@@ -23,7 +23,7 @@ public class TraderTest extends TestCase {
             @Override
             public ZonedDateTime time() {
                 ZonedDateTime now = ZonedDateTime.now();
-                System.out.println(now);
+//                System.out.println(now);
                 return now;
             }
         });
@@ -96,7 +96,7 @@ public class TraderTest extends TestCase {
             @Override
             public ZonedDateTime time() {
                 ZonedDateTime now = ZonedDateTime.now().minusMinutes(15).minusSeconds(1);
-                System.out.println(now);
+//                System.out.println(now);
                 return now;
             }
         });
@@ -155,11 +155,11 @@ public class TraderTest extends TestCase {
 
         Calendar cal = Calendar.getInstance();
         ZonedDateTime today = ZonedDateTime.now();
-        System.out.println("today=" + today);
+//        System.out.println("today=" + today);
         ZonedDateTime yesterday = today.minusDays(1);
-        System.out.println("yesterday=" + yesterday);
+//        System.out.println("yesterday=" + yesterday);
         ZonedDateTime tomorrow = today.plusDays(1);
-        System.out.println("tomorrow=" + tomorrow);
+//        System.out.println("tomorrow=" + tomorrow);
 
         orderedSet.add(today);
         orderedSet.add(yesterday);
