@@ -31,6 +31,9 @@ public class StockTest extends TestCase {
         Stock.Dividend divv = Stock.dividend(abc, amm);
         assertEquals("12 PENNY : ABC - COMMON", divv.toString());
 
+        assertEquals(abc, divv.stock());
+        assertEquals(new Integer(12), divv.amount().value());
+
         Stock.Dividend abc100 = Stock.dividend(abc, Amount.instance(100));
         Stock.Dividend abc100_2 = Stock.dividend(abc, Amount.instance(100));
         Stock.Dividend abc101 = Stock.dividend(abc, Amount.instance(101));

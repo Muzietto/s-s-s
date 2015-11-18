@@ -99,7 +99,7 @@ public class Stock {
             return Stock.instance(stock.symbol, stock.type);
         }
 
-        public Amount value() {
+        public Amount amount() {
             return Amount.instance(dividend.value());
         }
 
