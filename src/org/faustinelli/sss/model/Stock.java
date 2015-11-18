@@ -2,6 +2,7 @@ package org.faustinelli.sss.model;
 
 import org.faustinelli.sss.util.Amount;
 
+import java.text.NumberFormat;
 import java.util.Optional;
 
 public class Stock {
@@ -86,7 +87,6 @@ public class Stock {
     }
 
     public class Dividend {
-
         private Stock stock;
         private Amount dividend;
 
@@ -115,4 +115,31 @@ public class Stock {
             return stock.hashCode() + dividend.hashCode();
         }
     }
+
+    public class DividendYield {
+        private final Stock stock;
+        private final Double value;
+        private NumberFormat nf;
+
+        protected DividendYield(Stock aStock, Integer intValue) {
+            this(aStock, (double) intValue);
+        }
+
+        protected DividendYield(Stock aStock, Double dbValue) {
+            stock = aStock;
+            value = dbValue;
+            nf = NumberFormat.getPercentInstance();
+            nf.setMinimumFractionDigits(1);
+        }
+
+        public Stock stock() {
+            return Stock.instance(stock.symbol, stock.type);
+        }
+
+        @Override
+        public String toString() {
+            return nf.format(value);
+        }
+    }
+
 }

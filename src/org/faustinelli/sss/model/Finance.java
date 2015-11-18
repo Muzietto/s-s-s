@@ -17,9 +17,18 @@ public class Finance {
     public static Finance instance() {
         return new Finance(new HashSet<Stock.Dividend>());
     }
-    
+
     public Stock.Dividend recordDividend(Stock.Dividend dividend) {
         lastDividends.add(dividend);
         return dividend;
     }
+
+    public static Stock.DividendYield instance(Stock stock, Integer value) {
+        return stock.new DividendYield(stock, value);
+    }
+
+    public static Stock.DividendYield instance(Stock stock, Double value) {
+        return stock.new DividendYield(stock, value);
+    }
+
 }
