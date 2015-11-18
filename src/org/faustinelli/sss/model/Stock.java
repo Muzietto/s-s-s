@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public class Stock {
 
-    public static Dividend NULL_DIVIDEND = dividend(Stock.common("___", Amount.ZERO_PENNIES), Amount.ZERO_PENNIES);
+    public static Dividend NULL_DIVIDEND =
+            Stock.common("___", Amount.ZERO_PENNIES).dividend(Amount.ZERO_PENNIES);
 
     private final String symbol;
     private final Stock.Type type;
@@ -33,16 +34,16 @@ public class Stock {
         return new Stock(name, Type.PREFERRED, parValue, fixedDividendPc);
     }
 
-    public static Dividend dividend(Stock aStock, Amount aDividend) {
-        return aStock.new Dividend(aStock, aDividend);
-    }
-
     public DividendYield dividendYield(Double value) {
         return new DividendYield(this, value);
     }
 
-    public Optional<Dividend> dividend() {
-        return this.type.dividend(this).flatMap(amount -> Optional.of(new Dividend(this, amount)));
+    public Optional<Dividend> fixedDividend() {
+        return this.type.fixedDividend(this).flatMap(amount -> Optional.of(new Dividend(this, amount)));
+    }
+
+    public Dividend dividend(Amount value) {
+        return this.fixedDividend().orElse(this.new Dividend(this, value));
     }
 
     public Amount parValue() {
@@ -76,18 +77,18 @@ public class Stock {
     public enum Type {
         COMMON {
             @Override
-            Optional<Amount> dividend(Stock stock) {
+            Optional<Amount> fixedDividend(Stock stock) {
                 return Optional.empty();
             }
         },
         PREFERRED {
             @Override
-            Optional<Amount> dividend(Stock stock) {
+            Optional<Amount> fixedDividend(Stock stock) {
                 return Optional.of(Amount.instance(stock.parValue().value() * stock.fixedDividendPc()));
             }
         };
 
-        abstract Optional<Amount> dividend(Stock stock);
+        abstract Optional<Amount> fixedDividend(Stock stock);
     }
 
     public class Dividend {

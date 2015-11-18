@@ -28,15 +28,15 @@ public class StockTest extends TestCase {
         assertEquals("12 PENNY", amm.toString());
 
         Stock abc = Stock.common("abc", Amount.instance(100));
-        Stock.Dividend divv = Stock.dividend(abc, amm);
+        Stock.Dividend divv = abc.dividend(amm);
         assertEquals("12 PENNY : ABC - COMMON", divv.toString());
 
         assertEquals(abc, divv.stock());
         assertEquals(new Integer(12), divv.amount().value());
 
-        Stock.Dividend abc100 = Stock.dividend(abc, Amount.instance(100));
-        Stock.Dividend abc100_2 = Stock.dividend(abc, Amount.instance(100));
-        Stock.Dividend abc101 = Stock.dividend(abc, Amount.instance(101));
+        Stock.Dividend abc100 = abc.dividend(Amount.instance(100));
+        Stock.Dividend abc100_2 = abc.dividend(Amount.instance(100));
+        Stock.Dividend abc101 = abc.dividend(Amount.instance(101));
 
         assertEquals(abc100, abc100_2);
         assertEquals(abc100.hashCode(), abc100_2.hashCode());
@@ -45,12 +45,18 @@ public class StockTest extends TestCase {
         assertFalse(abc100.hashCode() == abc101.hashCode());
     }
 
-    public void testDividendPreferredStock() throws Exception {
+    public void testFixedDividend() throws Exception {
         Stock pre = Stock.preferred("pre", Amount.instance(250), new Integer(3));
         Stock com = Stock.common("com", Amount.instance(250));
-        assertEquals(Stock.dividend(pre, Amount.instance(750)), pre.dividend().orElse(Stock.NULL_DIVIDEND));
-        assertEquals(Stock.NULL_DIVIDEND, com.dividend().orElse(Stock.NULL_DIVIDEND));
+        assertEquals(pre.dividend(Amount.instance(750)), pre.fixedDividend().orElse(Stock.NULL_DIVIDEND));
+        assertEquals(Stock.NULL_DIVIDEND, com.fixedDividend().orElse(Stock.NULL_DIVIDEND));
+    }
 
+    public void testDividendPreferredIgnoresAmounts() throws Exception {
+        Stock pre = Stock.preferred("pre", Amount.instance(250), new Integer(3));
+        Stock com = Stock.common("com", Amount.instance(250));
+        assertEquals(Amount.instance(3*250), pre.dividend(Amount.instance(1234)).amount());
+        assertEquals(Amount.instance(1234), com.dividend(Amount.instance(1234)).amount());
     }
 
     public void testDividendYield() throws Exception {
