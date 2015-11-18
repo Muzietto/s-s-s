@@ -1,6 +1,7 @@
 package org.faustinelli.sss.model;
 
 import junit.framework.TestCase;
+import org.faustinelli.sss.util.Amount;
 
 import java.time.ZonedDateTime;
 import java.util.*;

@@ -1,5 +1,7 @@
 package org.faustinelli.sss.model;
 
+import org.faustinelli.sss.util.Amount;
+
 import java.util.Optional;
 
 public class Stock {
@@ -61,6 +63,11 @@ public class Stock {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return symbol.hashCode() + type.hashCode();
+    }
+
     public enum Type {
         COMMON {
             @Override
@@ -101,6 +108,11 @@ public class Stock {
             } catch (Exception e) {
                 return false;
             }
+        }
+
+        @Override
+        public int hashCode() {
+            return stock.hashCode() + dividend.hashCode();
         }
     }
 }

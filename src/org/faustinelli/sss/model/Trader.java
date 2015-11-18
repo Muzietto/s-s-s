@@ -1,5 +1,6 @@
 package org.faustinelli.sss.model;
 
+import org.faustinelli.sss.util.Amount;
 import org.faustinelli.sss.util.Fraction;
 
 import java.time.ZonedDateTime;

@@ -1,7 +1,6 @@
 package org.faustinelli.sss.util;
 
 import junit.framework.TestCase;
-import org.faustinelli.sss.model.Amount;
 
 import java.util.Arrays;
 

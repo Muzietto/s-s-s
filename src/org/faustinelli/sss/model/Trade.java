@@ -1,6 +1,7 @@
 package org.faustinelli.sss.model;
 
-import java.time.LocalDateTime;
+import org.faustinelli.sss.util.Amount;
+
 import java.time.ZonedDateTime;
 import java.util.AbstractMap;
 

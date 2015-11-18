@@ -1,9 +1,7 @@
 package org.faustinelli.sss.model;
 
-import junit.framework.Assert.*;
 import junit.framework.TestCase;
-
-import java.util.Optional;
+import org.faustinelli.sss.util.Amount;
 
 public class StockTest extends TestCase {
 
@@ -15,8 +13,13 @@ public class StockTest extends TestCase {
         assertEquals(Amount.instance(100), fiat.parValue());
 
         assertEquals(Stock.instance("Fiat", Stock.Type.PREFERRED), fiat);
+        assertEquals(Stock.instance("Fiat", Stock.Type.PREFERRED).hashCode(), fiat.hashCode());
+
         assertFalse(Stock.instance("Fiat", Stock.Type.COMMON).equals(fiat));
+        assertFalse(Stock.instance("Fiat", Stock.Type.COMMON).hashCode() == fiat.hashCode());
+
         assertFalse(Stock.instance("Volkswagen", Stock.Type.PREFERRED).equals(fiat));
+        assertFalse(Stock.instance("Volkswagen", Stock.Type.PREFERRED).hashCode() == fiat.hashCode());
     }
 
     public void testAmountDividend() throws Exception {
@@ -27,6 +30,16 @@ public class StockTest extends TestCase {
         Stock abc = Stock.common("abc", Amount.instance(100));
         Stock.Dividend divv = Stock.dividend(abc, amm);
         assertEquals("12 PENNY : ABC - COMMON", divv.toString());
+
+        Stock.Dividend abc100 = Stock.dividend(abc, Amount.instance(100));
+        Stock.Dividend abc100_2 = Stock.dividend(abc, Amount.instance(100));
+        Stock.Dividend abc101 = Stock.dividend(abc, Amount.instance(101));
+
+        assertEquals(abc100, abc100_2);
+        assertEquals(abc100.hashCode(), abc100_2.hashCode());
+
+        assertFalse(abc100.equals(abc101));
+        assertFalse(abc100.hashCode() == abc101.hashCode());
     }
 
     public void testDividendPreferredStock() throws Exception {

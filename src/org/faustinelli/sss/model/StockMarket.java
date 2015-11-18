@@ -1,5 +1,7 @@
 package org.faustinelli.sss.model;
 
+import org.faustinelli.sss.util.Amount;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BinaryOperator;

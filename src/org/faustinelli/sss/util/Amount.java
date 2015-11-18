@@ -1,10 +1,9 @@
-package org.faustinelli.sss.model;
+package org.faustinelli.sss.util;
 
 public class Amount {
     public static final Amount ZERO_PENNIES = Amount.instance(0);
     private final Currency currency;
     private final Integer value;
-    private Integer digits;
 
     private Amount(Integer aValue, Amount.Currency aCurrency) {
         value = aValue;
@@ -42,6 +41,11 @@ public class Amount {
         } catch (Exception exc) {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return value.intValue() + currency.hashCode();
     }
 
     @Override
