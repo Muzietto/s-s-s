@@ -52,4 +52,15 @@ public class StockTest extends TestCase {
         assertEquals(Stock.NULL_DIVIDEND, com.dividend().orElse(Stock.NULL_DIVIDEND));
 
     }
+
+    public void testDividendYield() throws Exception {
+        Stock com = Stock.common("com", Amount.instance(100));
+        Stock.DividendYield yield = com.dividendYield(.023);
+
+        assertEquals(com, yield.stock());
+        assertEquals(new Double(0.023), yield.value());
+        assertEquals("2,3%", yield.toString());
+
+    }
+
 }
