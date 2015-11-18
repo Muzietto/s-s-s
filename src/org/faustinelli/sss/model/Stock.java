@@ -95,6 +95,14 @@ public class Stock {
             stock = aStock;
         }
 
+        public Stock stock() {
+            return Stock.instance(stock.symbol, stock.type);
+        }
+
+        public Amount value() {
+            return Amount.instance(dividend.value());
+        }
+
         @Override
         public String toString() {
             return dividend.toString() + " : " + stock.toString();
