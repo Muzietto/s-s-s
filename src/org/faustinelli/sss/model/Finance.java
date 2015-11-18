@@ -24,11 +24,11 @@ public class Finance {
     }
 
     public static Stock.DividendYield instance(Stock stock, Integer value) {
-        return stock.new DividendYield(stock, value);
+        return stock.dividendYield(new Double(value));
     }
 
     public static Stock.DividendYield instance(Stock stock, Double value) {
-        return stock.new DividendYield(stock, value);
+        return stock.dividendYield(value);
     }
 
 }

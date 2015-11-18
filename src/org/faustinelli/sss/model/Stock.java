@@ -37,6 +37,10 @@ public class Stock {
         return aStock.new Dividend(aStock, aDividend);
     }
 
+    public DividendYield dividendYield(Double value) {
+        return new DividendYield(this, value);
+    }
+
     public Optional<Dividend> dividend() {
         return this.type.dividend(this).flatMap(amount -> Optional.of(new Dividend(this, amount)));
     }
@@ -129,11 +133,11 @@ public class Stock {
         private final Double value;
         private NumberFormat nf;
 
-        protected DividendYield(Stock aStock, Integer intValue) {
+        private DividendYield(Stock aStock, Integer intValue) {
             this(aStock, (double) intValue);
         }
 
-        protected DividendYield(Stock aStock, Double dbValue) {
+        private DividendYield(Stock aStock, Double dbValue) {
             stock = aStock;
             value = dbValue;
             nf = NumberFormat.getPercentInstance();
@@ -142,6 +146,10 @@ public class Stock {
 
         public Stock stock() {
             return Stock.instance(stock.symbol, stock.type);
+        }
+
+        public Double value() {
+            return new Double(value);
         }
 
         @Override
