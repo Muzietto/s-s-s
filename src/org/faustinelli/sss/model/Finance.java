@@ -1,26 +1,26 @@
 package org.faustinelli.sss.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Finance {
-    private final Set<Stock.Dividend> lastDividends;
+    private final Map<Stock, Stock.Dividend> lastDividends;
 
-    public Finance(Set<Stock.Dividend> theLastDividends) {
+    public Finance(Map<Stock, Stock.Dividend> theLastDividends) {
         lastDividends = theLastDividends;
     }
 
-    public static Finance instance(Set<Stock.Dividend> lastDividends) {
+    public static Finance instance(Map<Stock, Stock.Dividend> lastDividends) {
         return new Finance(lastDividends);
     }
 
     public static Finance instance() {
-        return new Finance(new HashSet<Stock.Dividend>());
+        return new Finance(new ConcurrentHashMap<Stock, Stock.Dividend>());
     }
 
     public Stock.Dividend recordDividend(Stock.Dividend dividend) {
-        lastDividends.add(dividend);
-        return dividend;
+        lastDividends.put(dividend.stock(), dividend);
+        return lastDividends.get(dividend.stock());
     }
 
     public static Stock.DividendYield instance(Stock stock, Integer value) {
