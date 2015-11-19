@@ -11,13 +11,13 @@ public class StockMarket {
     private static final StockMarket GBCE = new StockMarket();
 
     private Set<Stock> stocks;
-    private Finance finance;
+    private Analyst analyst;
     private Trader trader;
 
     private StockMarket() {
         stocks = new HashSet<Stock>();
         trader = Trader.instance();
-        finance = Finance.instance();
+        analyst = Analyst.instance();
     }
 
     public static StockMarket GBCE() {
@@ -49,7 +49,7 @@ public class StockMarket {
     }
 
     public Stock.Dividend recordDividend(Stock stock, Amount value) {
-        return finance.recordDividend(stock, value);
+        return analyst.recordDividend(stock, value);
 
     }
 }
