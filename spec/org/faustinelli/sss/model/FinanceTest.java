@@ -10,13 +10,11 @@ public class FinanceTest extends TestCase {
         Finance fff = Finance.instance();
         Stock com = Stock.common("com", Amount.instance(100));
 
-        Stock.Dividend div1 = com.dividend(Amount.instance(10));
-        Stock.Dividend returnDivv = fff.recordDividend(div1);
-        assertEquals(returnDivv, div1);
+        Stock.Dividend returnDivv = fff.recordDividend(com, Amount.instance(10));
+        assertEquals(returnDivv, com.dividend(Amount.instance(10)));
 
-        Stock.Dividend div2 = com.dividend(Amount.instance(11));
-        returnDivv = fff.recordDividend(div2);
-        assertEquals(returnDivv, div2);
+        returnDivv = fff.recordDividend(com, Amount.instance(11));
+        assertEquals(returnDivv, com.dividend(Amount.instance(11)));
     }
 
     public void testInstanceDividendYield() throws Exception {

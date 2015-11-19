@@ -11,13 +11,13 @@ public class StockMarket {
     private static final StockMarket GBCE = new StockMarket();
 
     private Set<Stock> stocks;
-    // TODO have a Finance handle this
-    private Set<Stock.Dividend> lastDividends;
+    private Finance finance;
     private Trader trader;
 
     private StockMarket() {
         stocks = new HashSet<Stock>();
         trader = Trader.instance();
+        finance = Finance.instance();
     }
 
     public static StockMarket GBCE() {
@@ -30,7 +30,7 @@ public class StockMarket {
     }
 
     public Amount tickerPrice(Stock stock) {
-        return trader.tickerPrice(stock);
+        return trader.stockPrice(stock);
     }
 
     public Integer gbceAllSharesIndex() {
@@ -46,5 +46,10 @@ public class StockMarket {
                 });
 
         return (int) Math.round(Math.pow((double) product.intValue(), 1.0 / stocks.size()));
+    }
+
+    public Stock.Dividend recordDividend(Stock stock, Amount value) {
+        return finance.recordDividend(stock, value);
+
     }
 }
