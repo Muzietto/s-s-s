@@ -71,6 +71,7 @@ public class Trader {
                 .price();
     }
 
+    // TODO - improve me with a Spliterator!
     public Amount stockPrice(Stock stock) {
 
         Fraction<Amount, Integer> result = trades.stream()
