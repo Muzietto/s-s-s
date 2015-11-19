@@ -1,5 +1,7 @@
 package org.faustinelli.sss.model;
 
+import org.faustinelli.sss.util.Amount;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,9 +20,9 @@ public class Finance {
         return new Finance(new ConcurrentHashMap<Stock, Stock.Dividend>());
     }
 
-    public Stock.Dividend recordDividend(Stock.Dividend dividend) {
-        lastDividends.put(dividend.stock(), dividend);
-        return lastDividends.get(dividend.stock());
+    public Stock.Dividend recordDividend(Stock stock, Amount value) {
+        lastDividends.put(stock, stock.dividend(value));
+        return lastDividends.get(stock);
     }
 
     public static Stock.DividendYield instance(Stock stock, Integer value) {
