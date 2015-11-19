@@ -67,6 +67,8 @@ public class StockTest extends TestCase {
         assertEquals(new Double(0.023), yield.value());
         assertEquals("2,3%", yield.toString());
 
+        Stock com2 = Stock.instance("com", Stock.Type.COMMON);
+        assertEquals(com2.dividendYield(new Double(.023)), yield);
     }
 
 }
