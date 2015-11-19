@@ -157,6 +157,20 @@ public class Stock {
         public String toString() {
             return nf.format(value);
         }
-    }
 
+        @Override
+        public boolean equals(Object obj) {
+            try {
+                DividendYield other = (DividendYield) obj;
+                return this.stock.equals(other.stock) && this.value.equals(other.value);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return stock.hashCode() + value.hashCode();
+        }
+    }
 }
