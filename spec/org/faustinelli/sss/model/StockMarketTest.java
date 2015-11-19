@@ -3,6 +3,7 @@ package org.faustinelli.sss.model;
 import junit.framework.TestCase;
 import org.faustinelli.sss.util.Amount;
 
+// NB: use different shares in each test!
 public class StockMarketTest extends TestCase {
 
     public void testTickerPrice() throws Exception {
@@ -15,7 +16,7 @@ public class StockMarketTest extends TestCase {
 
         assertEquals(Amount.instance(10), gbce.tickerPrice(Stock.instance("ABC", Stock.Type.COMMON)));
         assertEquals(Amount.instance(20), gbce.tickerPrice(Stock.instance("XYZ", Stock.Type.PREFERRED)));
-        assertEquals(Amount.instance(30), gbce.tickerPrice(Stock.instance("XYZ", Stock.Type.PREFERRED)));
+        assertEquals(Amount.instance(30), gbce.tickerPrice(Stock.instance("jkl", Stock.Type.PREFERRED)));
     }
     }
 }
