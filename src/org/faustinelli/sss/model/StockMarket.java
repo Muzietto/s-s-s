@@ -52,4 +52,8 @@ public class StockMarket {
         return analyst.recordDividend(stock, value);
 
     }
+
+    public Stock.DividendYield dividendYield(Stock stock) {
+        return analyst.dividendYield(stock, trader);
+    }
 }
