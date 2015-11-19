@@ -63,7 +63,7 @@ public class Trader {
         return trade;
     }
 
-    public Amount tickerPrice(Stock stock) {
+    public Amount lastPrice(Stock stock) {
         return trades.stream()
                 .filter(trade -> trade.stock().equals(stock))
                 .findFirst()

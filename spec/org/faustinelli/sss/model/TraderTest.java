@@ -53,8 +53,8 @@ public class TraderTest extends TestCase {
         trader.trade(xyz, Trade.Indicator.BUY, Amount.instance(25), 17);
         trader.trade(xyz, Trade.Indicator.SELL, Amount.instance(35), 18);
 
-        assertEquals(Amount.instance(35), trader.tickerPrice(xyz));
-        assertEquals(Amount.instance(45), trader.tickerPrice(abc));
+        assertEquals(Amount.instance(35), trader.lastPrice(xyz));
+        assertEquals(Amount.instance(45), trader.lastPrice(abc));
     }
 
     public void testStockPrice() throws Exception {
