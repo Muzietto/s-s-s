@@ -60,6 +60,7 @@ public class StockTest extends TestCase {
     }
 
     public void testDividendYield() throws Exception {
+    public void testDividendYieldCommonStockUsingFactories() throws Exception {
         Stock com = Stock.common("com", Amount.instance(100));
         Stock.DividendYield yield = com.dividendYield(.023);
 
@@ -71,4 +72,15 @@ public class StockTest extends TestCase {
         assertEquals(com2.dividendYield(new Double(.023)), yield);
     }
 
+    public void testDividendYieldPreferredStockUsingFactoriesIsSameAsCommonStock() throws Exception {
+        Stock pre = Stock.preferred("pre", Amount.instance(250), new Integer(3));
+        Stock.DividendYield yield = pre.dividendYield(.023);
+
+        assertEquals(pre, yield.stock());
+        assertEquals(new Double(0.023), yield.value());
+        assertEquals("2,3%", yield.toString());
+
+        Stock pre2 = Stock.instance("pre", Stock.Type.PREFERRED);
+        assertEquals(pre2.dividendYield(new Double(.023)), yield);
+    }
 }
