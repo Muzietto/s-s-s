@@ -56,4 +56,8 @@ public class StockMarket {
     public Stock.DividendYield dividendYield(Stock stock) {
         return analyst.dividendYield(stock, trader);
     }
+
+    public Stock.PERatio peRation(Stock stock) {
+        return analyst.peRatio(stock, trader);
+    }
 }
