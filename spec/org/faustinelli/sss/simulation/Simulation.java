@@ -23,7 +23,7 @@ public class Simulation {
 
         Map<String, Stock> stocks = new HashMap<String, Stock>();
         stocks.put("ALE", Stock.common("ALE", Amount.instance(60)));
-        stocks.put("GIN", Stock.preferred("GIN", Amount.instance(30), new Integer(2)));
+        stocks.put("GIN", Stock.preferred("GIN", Amount.instance(10), new Integer(2)));
         stocks.put("JOE", Stock.common("JOE", Amount.instance(250)));
         stocks.put("POP", Stock.common("POP", Amount.instance(100)));
         stocks.put("PRE", Stock.preferred("PRE", Amount.instance(15), new Integer(2)));
