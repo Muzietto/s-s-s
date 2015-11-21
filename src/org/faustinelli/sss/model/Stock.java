@@ -9,6 +9,8 @@ public class Stock {
 
     public static Dividend NULL_DIVIDEND =
             Stock.common("___", Amount.ZERO_PENNIES).dividend(Amount.ZERO_PENNIES);
+    public static final DividendYield NULL_DIVIDEND_YIELD =
+            Stock.common("___", Amount.ZERO_PENNIES).dividendYield(new Double(0));
 
     private final String symbol;
     private final Stock.Type type;
@@ -34,6 +36,7 @@ public class Stock {
         return new Stock(name, Type.PREFERRED, parValue, fixedDividendPc);
     }
 
+    // just a straight factory - no domain knowledge whatsoever
     public DividendYield dividendYield(Double value) {
         return new DividendYield(this, value);
     }
