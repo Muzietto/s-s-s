@@ -29,40 +29,46 @@ public class CsvReader {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
+        ZonedDateTime nextCalculationTime = clock.lastTick().plusMinutes(new Long(20));
 
         try {
             br = new BufferedReader(new FileReader(file));
+
+
             while ((line = br.readLine()) != null) {
 
-                ZonedDateTime nextCalculationTime = clock.lastTick().plusMinutes(new Long(20));
-                do {
-                    // using comma as separator
-                    String[] trade = line.split(cvsSplitBy);
+                // using comma as separator
+                String[] tradeArray = line.split(cvsSplitBy);
 
-                    String symbol = trade[0];
-                    String indicator = trade[1];
-                    Integer price = Integer.parseInt(trade[2]);
-                    Integer qty = Integer.parseInt(trade[3]);
+                String symbol = tradeArray[0];
+                String indicator = tradeArray[1];
+                Integer price = Integer.parseInt(tradeArray[2]);
+                Integer qty = Integer.parseInt(tradeArray[3]);
 
-                    Stock stock = stocks.get(symbol);
-                    Trade.Indicator tradingIndicator
-                            = (indicator == "BUY") ? Trade.Indicator.BUY : Trade.Indicator.SELL;
-                    Amount tradingPrice = Amount.instance(price);
+                Stock currentStock = stocks.get(symbol);
+                Trade.Indicator tradingIndicator
+                        = (indicator == "BUY") ? Trade.Indicator.BUY : Trade.Indicator.SELL;
+                Amount tradingPrice = Amount.instance(price);
 
-                    output.println(gbce.trade(stock, tradingIndicator, tradingPrice, qty));
-                } while (clock.lastTick().compareTo(nextCalculationTime) < 0);
+                Trade trade = gbce.trade(currentStock, tradingIndicator, tradingPrice, qty);
+                //output.println(trade);
 
-                output.println("********************************************************************");
-                output.println("* Time is: " + clock.lastTick() + "*");
-                for (Stock stock: stocks.values()) {
-                    output.println("* -------------- Stock " + stock.toString() + " ----------------- *");
-                    output.println("*   ticker price: " + gbce.tickerPrice(stock) + "*");
-                    output.println("* dividend yield: " + gbce.dividendYield(stock) + "*");
-                    output.println("*      P/E ratio: " + gbce.peRatio(stock) + "*");
+                if (clock.lastTick().compareTo(nextCalculationTime) > 0) {
+
+                    output.println("*******************************************************");
+                    output.println("* Time is: " + clock.lastTick() + "   *");
+                    for (Stock stock : stocks.values()) {
+                        output.println("* -------------- Stock " + stock.toString() + " ----------------- *");
+                        output.println("*                   ticker price: " + gbce.tickerPrice(stock, clock.lastTick()) + "            *");
+                        output.println("*                 dividend yield: " + gbce.dividendYield(stock, clock.lastTick()) + "              *");
+                        output.println("*                      P/E ratio: " + gbce.peRatio(stock, clock.lastTick()) + "                   *");
+                    }
+                    output.println("* --------------------------------------------------- *");
+                    output.println("*               GBCE all shares index: " + gbce.gbceAllSharesIndex(clock.lastTick()) + "             *");
+                    output.println("******************************************************");
+
+                    nextCalculationTime = clock.lastTick().plusMinutes(new Long(20));
                 }
-                output.println("* --------------------------------------------------------------------- *");
-                output.println("* GBCE all shares index: " + gbce.gbceAllSharesIndex() + "*");
-                output.println("********************************************************************");
             }
 
         } catch (Exception e) {
