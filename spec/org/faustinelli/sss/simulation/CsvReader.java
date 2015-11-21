@@ -7,7 +7,7 @@ import org.faustinelli.sss.util.Amount;
 
 import java.io.*;
 import java.net.URL;
-import java.util.HashMap;
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -15,47 +15,57 @@ import java.util.Map;
  */
 public class CsvReader {
 
-    public void run(StockMarket gbce, Map<String, Stock> stocks, String csvFile) {
+    private PrintStream output;
+
+    public CsvReader(PrintStream anOutput) {
+        output = anOutput;
+    }
+
+    public void run(StockMarket gbce, Simulation.RandomizedTradingClock clock, Map<String, Stock> stocks, String csvFile) {
 
         URL url = getClass().getResource(csvFile);
         File file = new File(url.getPath());
 
         BufferedReader br = null;
-        int counter = 0;
         String line = "";
         String cvsSplitBy = ",";
 
         try {
-
             br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null) {
 
-                // use comma as separator
-                String[] trade = line.split(cvsSplitBy);
+                ZonedDateTime nextCalculationTime = clock.lastTick().plusMinutes(new Long(20));
+                do {
+                    // using comma as separator
+                    String[] trade = line.split(cvsSplitBy);
 
-                String symbol = trade[0];
-                String indicator = trade[1];
-                Integer price = Integer.parseInt(trade[2]);
-                Integer qty = Integer.parseInt(trade[3]);
+                    String symbol = trade[0];
+                    String indicator = trade[1];
+                    Integer price = Integer.parseInt(trade[2]);
+                    Integer qty = Integer.parseInt(trade[3]);
 
-                System.out.println("Trade " + ++counter + " [" + ""
-                        + "symbol="      + symbol
-                        + " , indicator=" + indicator
-                        + " , price="     + price.toString()
-                        + " , qty="       + qty.toString()
-                        + "]");
+                    Stock stock = stocks.get(symbol);
+                    Trade.Indicator tradingIndicator
+                            = (indicator == "BUY") ? Trade.Indicator.BUY : Trade.Indicator.SELL;
+                    Amount tradingPrice = Amount.instance(price);
 
-                Stock stock = stocks.get(symbol);
-                Trade.Indicator tradingIndicator
-                        = (indicator == "BUY") ? Trade.Indicator.BUY : Trade.Indicator.SELL;
-                Amount tradingPrice = Amount.instance(price);
+                    output.println(gbce.trade(stock, tradingIndicator, tradingPrice, qty));
+                } while (clock.lastTick().compareTo(nextCalculationTime) < 0);
 
-                gbce.trade(stock, tradingIndicator, tradingPrice, qty);
+                output.println("********************************************************************");
+                output.println("* Time is: " + clock.lastTick() + "*");
+                for (Stock stock: stocks.values()) {
+                    output.println("* -------------- Stock " + stock.toString() + " ----------------- *");
+                    output.println("*   ticker price: " + gbce.tickerPrice(stock) + "*");
+                    output.println("* dividend yield: " + gbce.dividendYield(stock) + "*");
+                    output.println("*      P/E ratio: " + gbce.peRatio(stock) + "*");
+                }
+                output.println("* --------------------------------------------------------------------- *");
+                output.println("* GBCE all shares index: " + gbce.gbceAllSharesIndex() + "*");
+                output.println("********************************************************************");
             }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (br != null) {
@@ -67,7 +77,6 @@ public class CsvReader {
             }
         }
 
-        System.out.println("Done");
-
+        output.println("Done");
     }
 }
