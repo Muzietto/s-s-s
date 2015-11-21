@@ -43,6 +43,16 @@ public class Trade {
         return new Trade(aStock, anIndicator, aPrice, numShares, aTimestamp);
     }
 
+    @Override
+    public String toString() {
+        String result = "Trade: "
+                + ((timestamp != null) ? timestamp.toString() : "timestamp unknown") + " - "
+                + ((stock != null) ? stock.toString() : "stock unknown") + " - "
+                + ((priceQuantity!= null) ? priceQuantity.toString() : "priceQuantity unknown");
+        ;
+        return result;
+    }
+
     public static PriceQuantity priceQuantity(Amount aPrice, Integer numShares) {
         return new PriceQuantity(aPrice, numShares);
     }
@@ -63,6 +73,14 @@ public class Trade {
 
         public Integer getQuantity() {
             return (Integer) getValue();
+        }
+
+        @Override
+        public String toString() {
+            String result = ""
+                    + "price " + getPrice().toString()
+                    + " - qty " + getQuantity().toString();
+            return result;
         }
     }
 }
