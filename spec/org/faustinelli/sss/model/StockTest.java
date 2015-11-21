@@ -59,7 +59,6 @@ public class StockTest extends TestCase {
         assertEquals(Amount.instance(1234), com.dividend(Amount.instance(1234)).amount());
     }
 
-    public void testDividendYield() throws Exception {
     public void testDividendYieldCommonStockUsingFactories() throws Exception {
         Stock com = Stock.common("com", Amount.instance(100));
         Stock.DividendYield yield = com.dividendYield(.023);
