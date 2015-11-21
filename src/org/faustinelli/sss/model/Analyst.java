@@ -28,6 +28,10 @@ public class Analyst {
     public Stock.DividendYield dividendYield(Stock stock, Trader trader) {
         Stock.Dividend lastDividend = lastDividends.get(stock);
         Amount tickerPrice = trader.stockPrice(stock);
+
+        if (tickerPrice.value() < Double.MIN_VALUE * 1000) {
+            return Stock.NULL_DIVIDEND_YIELD;
+        }
         return stock.dividendYield(lastDividend.amount().value()/new Double(tickerPrice.value()));
     }
 }
