@@ -2,6 +2,7 @@ package org.faustinelli.sss.model;
 
 import org.faustinelli.sss.util.Amount;
 
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BinaryOperator;
@@ -41,19 +42,28 @@ public class StockMarket {
         return trader.stockPrice(stock);
     }
 
-    public Integer gbceAllSharesIndex() {
+    public Amount tickerPrice(Stock stock, ZonedDateTime now) {
+        return trader.stockPrice(stock, now);
+    }
 
-        Integer product = stocks
+    public Integer gbceAllSharesIndex() {
+        return gbceAllSharesIndex(ZonedDateTime.now());
+    }
+
+    public Integer gbceAllSharesIndex(ZonedDateTime now) {
+
+        Double product = stocks
                 .stream()
-                .map(stock -> trader.stockPrice(stock).value())
-                .reduce(1, new BinaryOperator<Integer>() {
+                .map(stock -> new Double(trader.stockPrice(stock, now).value()))
+                .reduce(1.0, new BinaryOperator<Double>() {
                     @Override
-                    public Integer apply(Integer acc, Integer curr) {
+                    public Double apply(Double acc, Double curr) {
                         return acc * curr;
                     }
                 });
 
-        return (int) Math.round(Math.pow((double) product.intValue(), 1.0 / stocks.size()));
+        int result = (int) Math.round(Math.pow(product, 1.0 / stocks.size()));
+        return result;
     }
 
     public Stock.Dividend recordDividend(Stock stock, Amount value) {
@@ -65,7 +75,15 @@ public class StockMarket {
         return analyst.dividendYield(stock, trader);
     }
 
+    public Stock.DividendYield dividendYield(Stock stock, ZonedDateTime now) {
+        return analyst.dividendYield(stock, trader, now);
+    }
+
     public Stock.PERatio peRatio(Stock stock) {
         return analyst.peRatio(stock, trader);
+    }
+
+    public Stock.PERatio peRatio(Stock stock, ZonedDateTime now) {
+        return analyst.peRatio(stock, trader, now);
     }
 }
