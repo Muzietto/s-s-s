@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 
 public class RandomizedTradingClockTest extends TestCase {
 
-    private TradingClock clock = null;
+    private Simulation.RandomizedTradingClock clock = null;
 
     @Override
     protected void setUp() throws Exception {
@@ -23,5 +23,15 @@ public class RandomizedTradingClockTest extends TestCase {
         assertTrue(firstTick.compareTo(secondTick) <= 0);
         assertTrue(secondTick.compareTo(thirdTick) <= 0);
         assertTrue(thirdTick.compareTo(fourthTick) <= 0);
+    }
+
+    public void testAccessInnerVariable() throws Exception {
+        ZonedDateTime firstTick = clock.time();
+        ZonedDateTime verifyFirstTick = clock.lastTick();
+        assertEquals(verifyFirstTick, firstTick);
+
+        ZonedDateTime secondTick = clock.time();
+        ZonedDateTime verifySecondTick = clock.lastTick();
+        assertEquals(verifySecondTick, secondTick);
     }
 }
