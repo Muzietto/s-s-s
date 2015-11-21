@@ -47,7 +47,7 @@ public class StockMarketTest extends TestCase {
         gbce.recordDividend(common, Amount.instance(7));
         gbce.recordDividend(preferred, Amount.instance(8));
 
-        assertEquals(common.peRatio(new Integer(26)), gbce.peRation(common));
-        assertEquals(preferred.peRatio(new Integer(10)), gbce.peRation(preferred));
+        assertEquals(common.peRatio(new Integer(26)), gbce.peRatio(common));
+        assertEquals(preferred.peRatio(new Integer(10)), gbce.peRatio(preferred));
     }
 }
