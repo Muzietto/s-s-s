@@ -15,13 +15,21 @@ public class StockMarket {
     private Trader trader;
 
     private StockMarket() {
+        this(Trader.instance());
+    }
+
+    private StockMarket(Trader aTrader) {
         stocks = new HashSet<Stock>();
-        trader = Trader.instance();
+        trader = aTrader;
         analyst = Analyst.instance();
     }
 
     public static StockMarket GBCE() {
         return GBCE;
+    }
+
+    public static StockMarket instance(Trader trader) {
+        return new StockMarket(trader);
     }
 
     public Trade trade(Stock aStock, Trade.Indicator anIndicator, Amount aPrice, Integer numShares) {
