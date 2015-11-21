@@ -71,13 +71,17 @@ public class Trader {
                 .price();
     }
 
-    // TODO - improve me with a Spliterator!
     public Amount stockPrice(Stock stock) {
+        return stockPrice(stock, ZonedDateTime.now());
+    }
+
+    // TODO - improve me with a Spliterator!
+    public Amount stockPrice(Stock stock, ZonedDateTime now) {
 
         Fraction<Amount, Integer> result = trades.stream()
                 .filter(trade ->
                         trade.stock().equals(stock)
-                                && (trade.timestamp().plusMinutes(15).compareTo(ZonedDateTime.now()) >= 0))
+                                && (trade.timestamp().plusMinutes(15).compareTo(now) >= 0))
                 .map((Trade t) -> t.priceQuantity())
                 .reduce(new Fraction(Amount.ZERO_PENNIES, 0),
                         new BiFunction<Fraction<Amount, Integer>, Trade.PriceQuantity, Fraction<Amount, Integer>>() {

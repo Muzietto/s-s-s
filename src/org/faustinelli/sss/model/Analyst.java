@@ -2,6 +2,7 @@ package org.faustinelli.sss.model;
 
 import org.faustinelli.sss.util.Amount;
 
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,9 +26,9 @@ public class Analyst {
         return lastDividends.get(stock);
     }
 
-    public Stock.DividendYield dividendYield(Stock stock, Trader trader) {
+    public Stock.DividendYield dividendYield(Stock stock, Trader trader, ZonedDateTime now) {
         Stock.Dividend lastDividend = lastDividends.get(stock);
-        Amount tickerPrice = trader.stockPrice(stock);
+        Amount tickerPrice = trader.stockPrice(stock, now);
 
         if (tickerPrice.value() < Double.MIN_VALUE * 1000) {
             return Stock.NULL_DIVIDEND_YIELD;
@@ -35,13 +36,21 @@ public class Analyst {
         return stock.dividendYield(lastDividend.amount().value()/new Double(tickerPrice.value()));
     }
 
-    public Stock.PERatio peRatio(Stock stock, Trader trader) {
+    public Stock.DividendYield dividendYield(Stock stock, Trader trader) {
+        return dividendYield(stock, trader, ZonedDateTime.now());
+    }
+
+    public Stock.PERatio peRatio(Stock stock, Trader trader, ZonedDateTime now) {
         Stock.Dividend lastDividend = lastDividends.get(stock);
-        Amount tickerPrice = trader.stockPrice(stock);
+        Amount tickerPrice = trader.stockPrice(stock, now);
 
         if (lastDividend == null || lastDividend.amount().value() == 0) {
             return Stock.NULL_PE_RATIO;
         }
         return stock.peRatio((int) Math.round(new Double(tickerPrice.value())/lastDividend.amount().value()));
+    }
+
+    public Stock.PERatio peRatio(Stock stock, Trader trader) {
+        return peRatio(stock, trader, ZonedDateTime.now());
     }
 }
