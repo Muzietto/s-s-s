@@ -53,4 +53,38 @@ public class AnalystTest extends TestCase {
         assertEquals(Stock.NULL_DIVIDEND_YIELD, yield);
     }
 
+    public void testPERatio() throws Exception {
+        trader.trade(com, Trade.Indicator.SELL, Amount.instance(700), new Integer(100));
+        trader.trade(pre, Trade.Indicator.BUY, Amount.instance(800), new Integer(10));
+        analyst.recordDividend(com, Amount.instance(7));
+        analyst.recordDividend(pre, Amount.instance(8)); // value ignored
+
+        assertEquals(com.peRatio(new Integer(100)), analyst.peRatio(com, trader));
+        assertEquals(pre.peRatio(new Integer(53)), analyst.peRatio(pre, trader));
+    }
+
+    public void testCalculateNullPERatio() throws Exception {
+        trader.trade(com, Trade.Indicator.SELL, Amount.instance(10), new Integer(100));
+        analyst.recordDividend(com, Amount.ZERO_PENNIES);
+
+        Stock.PERatio peRatio = analyst.peRatio(com, trader);
+        assertEquals(Stock.NULL_PE_RATIO, peRatio);
+    }
+
+    public void testPERatioPreferredStockMayBeZero() throws Exception {
+        // absurdity, only to verify numeric robustness
+        trader.trade(pre, Trade.Indicator.SELL, Amount.instance(0), new Integer(100));
+
+        Stock.PERatio peRatio2 = analyst.peRatio(pre, trader);
+        assertEquals(new Integer(0), peRatio2.value());
+    }
+
+    public void testPERatioPreferredStockCannotBeNull() throws Exception {
+        // absurdity, only to verify numeric robustness
+        analyst.recordDividend(pre, Amount.ZERO_PENNIES);
+        trader.trade(pre, Trade.Indicator.BUY, Amount.instance(200), new Integer(10));
+
+        Stock.PERatio peRatio = analyst.peRatio(pre, trader);
+        assertEquals(new Integer(13), peRatio.value());
+    }
 }

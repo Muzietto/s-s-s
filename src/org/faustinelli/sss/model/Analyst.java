@@ -34,4 +34,14 @@ public class Analyst {
         }
         return stock.dividendYield(lastDividend.amount().value()/new Double(tickerPrice.value()));
     }
+
+    public Stock.PERatio peRatio(Stock stock, Trader trader) {
+        Stock.Dividend lastDividend = lastDividends.get(stock);
+        Amount tickerPrice = trader.stockPrice(stock);
+
+        if (lastDividend == null || lastDividend.amount().value() == 0) {
+            return Stock.NULL_PE_RATIO;
+        }
+        return stock.peRatio((int) Math.round(new Double(tickerPrice.value())/lastDividend.amount().value()));
+    }
 }
