@@ -5,10 +5,28 @@ import org.faustinelli.sss.util.Amount;
 
 public class AnalystTest extends TestCase {
 
+    private Analyst analyst;
+    private Trader trader;
+    private Stock com;
+    private Stock pre;
+
+    @Override
+    protected void setUp() throws Exception {
+        analyst = Analyst.instance();
+        com = Stock.common("com", Amount.instance(100));
+        pre = Stock.preferred("com", Amount.instance(5), new Integer(3));
+        trader = Trader.instance();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        analyst = null;
+        com = null;
+        pre = null;
+        trader = null;
+    }
 
     public void testInstanceRecordDividend() throws Exception {
-        Analyst analyst = org.faustinelli.sss.model.Analyst.instance();
-        Stock com = Stock.common("com", Amount.instance(100));
 
         Stock.Dividend returnDivv = analyst.recordDividend(com, Amount.instance(10));
         assertEquals(returnDivv, com.dividend(Amount.instance(10)));
@@ -18,10 +36,6 @@ public class AnalystTest extends TestCase {
     }
 
     public void testCalculateDividendYield() throws Exception {
-        Analyst analyst = org.faustinelli.sss.model.Analyst.instance();
-        Stock com = Stock.common("com", Amount.instance(100));
-        Stock pre = Stock.preferred("com", Amount.instance(5), new Integer(3));
-        Trader trader = Trader.instance();
 
         trader.trade(com, Trade.Indicator.SELL, Amount.instance(10), new Integer(100));
         trader.trade(pre, Trade.Indicator.BUY, Amount.instance(20), new Integer(10));
