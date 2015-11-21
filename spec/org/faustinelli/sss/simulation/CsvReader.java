@@ -60,7 +60,7 @@ public class CsvReader {
                     for (Stock stock : stocks.values()) {
                         output.println("* -------------- Stock " + stock.toString() + " ----------------- *");
                         output.println("*                   ticker price: " + gbce.tickerPrice(stock, clock.lastTick()) + "            *");
-                        output.println("*                 dividend yield: " + gbce.dividendYield(stock, clock.lastTick()) + "              *");
+                        output.println("*                 dividend yield: " + gbce.dividendYield(stock, clock.lastTick()) + "                *");
                         output.println("*                      P/E ratio: " + gbce.peRatio(stock, clock.lastTick()) + "                   *");
                     }
                     output.println("* --------------------------------------------------- *");
