@@ -41,6 +41,18 @@ public class Stock {
         return new DividendYield(this, value);
     }
 
+    // just a straight factory - no domain knowledge whatsoever
+    public PERatio peRatio(Integer value) {
+        return new PERatio(this, value);
+    }
+
+    public PERatio peRatio(DividendYield yield) {
+        if (yield.value() < Double.MIN_VALUE * 1000) {
+            return Stock.NULL_PE_RATIO;
+        }
+        return new PERatio(yield.stock, new Integer((int) Math.round(1/yield.value)));
+    }
+
     public Optional<Dividend> fixedDividend() {
         return this.type.fixedDividend(this).flatMap(amount -> Optional.of(new Dividend(this, amount)));
     }
@@ -165,6 +177,46 @@ public class Stock {
         public boolean equals(Object obj) {
             try {
                 DividendYield other = (DividendYield) obj;
+                return this.stock.equals(other.stock) && this.value.equals(other.value);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            return stock.hashCode() + value.hashCode();
+        }
+    }
+
+    public class PERatio {
+        private final Stock stock;
+        private final Integer value;
+        private NumberFormat nf;
+
+        private PERatio(Stock aStock, Integer intValue) {
+            stock = aStock;
+            value = intValue;
+            nf = NumberFormat.getNumberInstance();
+        }
+
+        public Stock stock() {
+            return Stock.instance(stock.symbol, stock.type);
+        }
+
+        public Integer value() {
+            return new Integer(value);
+        }
+
+        @Override
+        public String toString() {
+            return nf.format(value);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            try {
+                PERatio other = (PERatio) obj;
                 return this.stock.equals(other.stock) && this.value.equals(other.value);
             } catch (Exception e) {
                 return false;
