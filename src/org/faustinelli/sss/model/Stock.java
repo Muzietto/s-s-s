@@ -11,6 +11,8 @@ public class Stock {
             Stock.common("___", Amount.ZERO_PENNIES).dividend(Amount.ZERO_PENNIES);
     public static final DividendYield NULL_DIVIDEND_YIELD =
             Stock.common("___", Amount.ZERO_PENNIES).dividendYield(new Double(0));
+    public static final PERatio NULL_PE_RATIO =
+            Stock.common("___", Amount.ZERO_PENNIES).peRatio(new Integer(0));
 
     private final String symbol;
     private final Stock.Type type;
