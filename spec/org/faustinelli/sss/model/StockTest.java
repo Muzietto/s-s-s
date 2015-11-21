@@ -82,4 +82,27 @@ public class StockTest extends TestCase {
         Stock pre2 = Stock.instance("pre", Stock.Type.PREFERRED);
         assertEquals(pre2.dividendYield(new Double(.023)), yield);
     }
+
+    public void testPeRatioFromStraightFactories() throws Exception {
+        Stock com = Stock.common("com", Amount.instance(100));
+        Stock.PERatio peRatio = com.peRatio(new Integer(22));
+
+        assertEquals(com, peRatio.stock());
+        assertEquals(new Integer(22), peRatio.value());
+        assertEquals("22", peRatio.toString());
+
+        assertEquals(Stock.common("com", Amount.instance(100)).peRatio(22), peRatio);
+    }
+
+    public void testPeRatioFromDividendYield() throws Exception {
+        Stock com = Stock.common("com", Amount.instance(100));
+        Stock.DividendYield yield = com.dividendYield(.023);
+        Stock.PERatio peRatio = com.peRatio(yield);
+
+        assertEquals(com, peRatio.stock());
+        assertEquals(new Integer(43), peRatio.value());
+        assertEquals("43", peRatio.toString());
+        assertEquals(Stock.common("com", Amount.instance(100)).peRatio(43), peRatio);
+    }
+
 }
