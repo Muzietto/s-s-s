@@ -46,4 +46,11 @@ public class AnalystTest extends TestCase {
         assertEquals(pre.dividendYield(new Double(0.75)), analyst.dividendYield(pre, trader));
     }
 
+    public void testCalculateNullDividendYield() throws Exception {
+        analyst.recordDividend(com, Amount.instance(7));
+
+        Stock.DividendYield yield = analyst.dividendYield(com, trader);
+        assertEquals(Stock.NULL_DIVIDEND_YIELD, yield);
+    }
+
 }
