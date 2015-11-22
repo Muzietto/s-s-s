@@ -8,13 +8,19 @@ Unit tests (JUnit 3) are to be found in:
 
 Two simulations are runnable in:
 
- - `spec/org/faustinelli/sss/simulation/Simulation.java` (short simulation - 10.000 trades)
- - `spec/org/faustinelli/sss/simulation/LongSimulation.java` (long simulation - 640.000 trades)
+ - `spec/org/faustinelli/sss/simulation/Simulation.java` (short simulation - 10.000 trades - approx 1 trade/3.5 sec)
+ - `spec/org/faustinelli/sss/simulation/LongSimulation.java` (long simulation - 640.000 trades - approx 1 trade/0.4 sec)
+
+Both simulations feature 6 stocks (4 common, 2 preferred) and present the following data calculated every 20 minutes:
+
+ - stock prices
+ - dividend yields
+ - P/E ratio's
 
 Simulations may output to:
 
  - console (as configured now)
- - CSV file (comment/uncomment lines as specified)
+ - CSV file (comment/uncomment lines as specified inside the .java files)
 
 Input data for the simulations are provided in:
 
