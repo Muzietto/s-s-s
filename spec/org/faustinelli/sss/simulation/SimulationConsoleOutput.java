@@ -27,6 +27,5 @@ public class SimulationConsoleOutput extends SimulationOutput {
         stream.println("* --------------------------------------------------- *");
         stream.println("*               GBCE all shares index: " + market.gbceAllSharesIndex(clock.lastTick()) + "             *");
         stream.println("******************************************************");
-
     }
 }
