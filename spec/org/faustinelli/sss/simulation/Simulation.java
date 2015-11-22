@@ -46,7 +46,8 @@ public class Simulation {
         SimulationConsoleOutput output = new SimulationConsoleOutput(System.out);
 
         // file-output-based simulation
-        String outputCsvFile = "s_s_s_01_TRADES.out.csv";
+        String outputDir = "./out/test/s-s-s/org/faustinelli/sss/simulation/";
+        String outputCsvFile = outputDir + "s_s_s_01_TRADES.out.csv";
         //SimulationFileOutput output = new SimulationFileOutput(new PrintStream(outputCsvFile, "UTF-8"));
 
         new CsvReader(output).run(gbce, clock, stocks, inputCsvFile);
