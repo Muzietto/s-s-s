@@ -6,12 +6,10 @@ import org.faustinelli.sss.model.StockMarket;
 import java.io.PrintStream;
 import java.util.Map;
 
-public class SimulationConsoleOutput implements SimulationOutput {
-
-    PrintStream stream;
+public class SimulationConsoleOutput extends SimulationOutput {
 
     public SimulationConsoleOutput(PrintStream aStream) {
-        stream = aStream;
+        super(aStream);
     }
 
     @Override
@@ -30,15 +28,5 @@ public class SimulationConsoleOutput implements SimulationOutput {
         stream.println("*               GBCE all shares index: " + gbce.gbceAllSharesIndex(clock.lastTick()) + "             *");
         stream.println("******************************************************");
 
-    }
-
-    @Override
-    public void close() {
-        try {
-            stream.println("Done");
-            stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
