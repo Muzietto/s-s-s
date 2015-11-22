@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class LongSimulation {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws  Exception {
 
         ZonedDateTime januarySixth2010nineAM = ZonedDateTime.of(2010, 1, 6, 9, 0, 0, 0, ZoneId.systemDefault());
         // max distance between trades 0.8 secs
