@@ -15,9 +15,9 @@ import java.util.Map;
  */
 public class CsvReader {
 
-    private PrintStream output;
+    private SimulationOutput output;
 
-    public CsvReader(PrintStream anOutput) {
+    public CsvReader(SimulationOutput anOutput) {
         output = anOutput;
     }
 
@@ -54,21 +54,11 @@ public class CsvReader {
                 Amount tradingPrice = Amount.instance(price);
 
                 Trade trade = gbce.trade(currentStock, tradingIndicator, tradingPrice, qty);
-                //output.println(trade);
+                //stream.println(trade);
 
                 if (clock.lastTick().compareTo(nextCalculationTime) > 0) {
 
-                    output.println("*******************************************************");
-                    output.println("* Time is: " + clock.lastTick() + "   *");
-                    for (Stock stock : stocks.values()) {
-                        output.println("* -------------- Stock " + stock.toString() + " ----------------- *");
-                        output.println("*                   ticker price: " + gbce.tickerPrice(stock, clock.lastTick()) + "            *");
-                        output.println("*                 dividend yield: " + gbce.dividendYield(stock, clock.lastTick()) + "                *");
-                        output.println("*                      P/E ratio: " + gbce.peRatio(stock, clock.lastTick()) + "                   *");
-                    }
-                    output.println("* --------------------------------------------------- *");
-                    output.println("*               GBCE all shares index: " + gbce.gbceAllSharesIndex(clock.lastTick()) + "             *");
-                    output.println("******************************************************");
+                    output.output(gbce, clock, stocks);
 
                     nextCalculationTime = clock.lastTick().plusMinutes(minutesBetweenAggregations);
                 }
@@ -80,12 +70,11 @@ public class CsvReader {
             if (br != null) {
                 try {
                     br.close();
+                    output.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-
-        output.println("Done");
     }
 }

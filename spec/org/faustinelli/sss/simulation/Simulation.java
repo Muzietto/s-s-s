@@ -10,15 +10,13 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class Simulation {
 
     public static void main(String[] args) {
 
-
         ZonedDateTime januarySixth2010nineAM = ZonedDateTime.of(2010, 1, 6, 9, 0, 0, 0, ZoneId.systemDefault());
-        // distance between trades approx. 7 seconds
+        // max distance between trades 7 seconds
         RandomizedTradingClock clock = new RandomizedTradingClock(januarySixth2010nineAM, new Double(7.0));
         StockMarket gbce = StockMarket.instance(Trader.instance(clock));
 
@@ -37,22 +35,22 @@ public class Simulation {
         gbce.recordDividend(stocks.get("PRE"),Amount.instance(10));
         gbce.recordDividend(stocks.get("TEA"),Amount.instance(3));
 
-        new CsvReader(System.out).run(gbce, clock, stocks, "s_s_s_01_TRADES.csv");
+        new CsvReader(new SimulationConsoleOutput(System.out)).run(gbce, clock, stocks, "s_s_s_01_TRADES.csv");
     }
 
     public static class RandomizedTradingClock implements TradingClock {
         private ZonedDateTime lastTick;
-        private Double stdDeviation;
+        private Double maxTimeLapse;
 
-        public RandomizedTradingClock(ZonedDateTime start, Double deviation) {
+        public RandomizedTradingClock(ZonedDateTime start, Double anInterval) {
             lastTick = start;
-            stdDeviation = deviation;
+            maxTimeLapse = anInterval;
         }
 
         @Override
         public ZonedDateTime time() {
             double random = Math.random();
-            Integer spreadSeconds = (int) Math.round(random *stdDeviation);
+            Integer spreadSeconds = (int) Math.round(random * maxTimeLapse);
 
             lastTick = lastTick.plusSeconds(spreadSeconds);
             return ZonedDateTime.parse(lastTick.toString());
