@@ -19,14 +19,12 @@ public class SimulationFileOutput extends SimulationOutput {
     public void output(StockMarket market, Simulation.RandomizedTradingClock clock, Map<String, Stock> stocks) {
 
         marketData.clear();
-        //marketData.add(String.valueOf(clock.lastTick().toEpochSecond()));
 
         for (Stock stock : stocks.values()) {
             marketData.add(String.valueOf(market.tickerPrice(stock, clock.lastTick()).value()));
         }
 
         marketData.add(String.valueOf(market.gbceAllSharesIndex(clock.lastTick())));
-
         stream.println(String.join(",", marketData));
     }
 }
