@@ -5,7 +5,10 @@ import org.faustinelli.sss.model.StockMarket;
 import org.faustinelli.sss.model.Trade;
 import org.faustinelli.sss.util.Amount;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package org.faustinelli.sss.simulation;
 
 import junit.framework.TestCase;
-import org.faustinelli.sss.model.TradingClock;
 
 import java.time.ZonedDateTime;
 

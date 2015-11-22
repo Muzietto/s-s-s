@@ -1,8 +1,6 @@
 package org.faustinelli.sss.util;
 
 import java.util.List;
-import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 
 public class GeometricMean {
     public static Integer value(List<Integer> aList) {

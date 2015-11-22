@@ -5,7 +5,6 @@ import org.faustinelli.sss.model.StockMarket;
 import org.faustinelli.sss.model.Trader;
 import org.faustinelli.sss.util.Amount;
 
-import java.io.PrintStream;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
