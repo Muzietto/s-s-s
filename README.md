@@ -11,7 +11,7 @@ Two simulations are runnable in:
  - `spec/org/faustinelli/sss/simulation/Simulation.java` (short simulation - 10.000 trades - approx 1 trade/3.5 sec)
  - `spec/org/faustinelli/sss/simulation/LongSimulation.java` (long simulation - 640.000 trades - approx 1 trade/0.4 sec)
 
-Both simulations run in fake time (they take respectively 10 and 50 seconds real time), feature 6 stocks (4 common, 2 preferred) and present the following datasets calculated every 20 minutes fake time:
+Both simulations run in fake time (they take respectively 10 and 50 seconds real time), feature 6 stocks (4 common, 2 preferred) and output the following datasets calculated every 20 minutes fake time:
 
  - stock prices
  - dividend yields
