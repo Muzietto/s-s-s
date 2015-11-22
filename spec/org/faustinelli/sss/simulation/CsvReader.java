@@ -40,9 +40,7 @@ public class CsvReader {
         try {
             br = new BufferedReader(new FileReader(file));
 
-
             while ((line = br.readLine()) != null) {
-
                 // using comma as separator
                 String[] tradeArray = line.split(cvsSplitBy);
 
@@ -57,16 +55,12 @@ public class CsvReader {
                 Amount tradingPrice = Amount.instance(price);
 
                 Trade trade = gbce.trade(currentStock, tradingIndicator, tradingPrice, qty);
-                //stream.println(trade);
 
                 if (clock.lastTick().compareTo(nextCalculationTime) > 0) {
-
                     output.output(gbce, clock, stocks);
-
                     nextCalculationTime = clock.lastTick().plusMinutes(minutesBetweenAggregations);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
