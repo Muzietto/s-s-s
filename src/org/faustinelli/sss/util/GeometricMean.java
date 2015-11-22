@@ -6,14 +6,20 @@ import java.util.stream.Stream;
 
 public class GeometricMean {
     public static Integer value(List<Integer> aList) {
-        Integer product = aList.stream()
-                .reduce(1, new BinaryOperator<Integer>() {
-                    @Override
-                    public Integer apply(Integer acc, Integer curr) {
-                        return acc * curr;
-                    }
-                });
+        try {
+            Double sumOfLogs = aList.stream()
+                    .map(item -> {
+                        if (item == 0) {
+                            throw new RuntimeException();
+                        }
+                        return new Double(Math.log((double) item));
+                    })
+                    .reduce(new Double(0), (curr, acc) -> curr + acc );
 
-        return (int) Math.round(Math.pow((double) product.intValue(), 1.0 / aList.size()));
+            // return exp(sumOfLogs/listSize)
+            return (int) Math.round(Math.exp(sumOfLogs / aList.size()));
+        } catch (RuntimeException ex) {
+            return 0;
+        }
     }
 }

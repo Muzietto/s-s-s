@@ -12,14 +12,19 @@ public class UtilTest extends TestCase {
 
         assertEquals(new Integer(2), GeometricMean.value(Arrays.asList(1, 2, 3, 2, 1)));
 
+        assertEquals(new Integer(0), GeometricMean.value(Arrays.asList(1, 2, 0, 2, 1)));
+
+        assertEquals(new Integer(0), GeometricMean.value(Arrays.asList(0)));
+
+        assertEquals(new Integer(83), GeometricMean.value(Arrays.asList(1, 2, 1000000000, 2, 1)));
+
         List<Integer> list = new ArrayList<Integer>();
-        Integer gazillion = new Integer(100000);
-//        Integer gazillion = new Integer(1000000000);
-        Integer times = 10;
+        Integer gazillion = new Integer(1000000000);
+        Integer times = 10000000; // increase this further only if there's a LOT of heap space...
         for (int i = 0; i < times; i++) {
             list.add(gazillion);
         }
-        assertEquals(gazillion, GeometricMean.value(list));
+        assertEquals(new Integer(999999997), GeometricMean.value(list));
     }
 
     public void testSimpleFraction() {
