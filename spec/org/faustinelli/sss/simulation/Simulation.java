@@ -6,6 +6,10 @@ import org.faustinelli.sss.model.Trader;
 import org.faustinelli.sss.model.TradingClock;
 import org.faustinelli.sss.util.Amount;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -35,7 +39,17 @@ public class Simulation {
         gbce.recordDividend(stocks.get("PRE"),Amount.instance(10));
         gbce.recordDividend(stocks.get("TEA"),Amount.instance(3));
 
-        new CsvReader(new SimulationConsoleOutput(System.out)).run(gbce, clock, stocks, "s_s_s_01_TRADES.csv");
+        // datafile
+        String inputCsvFile = "s_s_s_01_TRADES.csv";
+
+        // output for console-based simulation
+        SimulationConsoleOutput output = new SimulationConsoleOutput(System.out);
+
+        // file-output-based simulation
+        String outputCsvFile = "s_s_s_01_TRADES.out.csv";
+        //SimulationFileOutput output = new SimulationFileOutput(new PrintStream(outputCsvFile, "UTF-8"));
+
+        new CsvReader(output).run(gbce, clock, stocks, inputCsvFile);
     }
 
     public static class RandomizedTradingClock implements TradingClock {
