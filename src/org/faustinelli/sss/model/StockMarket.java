@@ -1,11 +1,14 @@
 package org.faustinelli.sss.model;
 
 import org.faustinelli.sss.util.Amount;
+import org.faustinelli.sss.util.GeometricMean;
 
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 public class StockMarket {
 
@@ -52,18 +55,12 @@ public class StockMarket {
 
     public Integer gbceAllSharesIndex(ZonedDateTime now) {
 
-        Double product = stocks
+        List<Integer> priceValues = stocks
                 .stream()
-                .map(stock -> new Double(trader.stockPrice(stock, now).value()))
-                .reduce(1.0, new BinaryOperator<Double>() {
-                    @Override
-                    public Double apply(Double acc, Double curr) {
-                        return acc * curr;
-                    }
-                });
+                .map(stock -> trader.stockPrice(stock, now).value())
+                .collect(Collectors.toList());
 
-        int result = (int) Math.round(Math.pow(product, 1.0 / stocks.size()));
-        return result;
+        return GeometricMean.value(priceValues);
     }
 
     public Stock.Dividend recordDividend(Stock stock, Amount value) {
