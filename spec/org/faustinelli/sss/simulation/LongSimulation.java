@@ -39,12 +39,13 @@ public class LongSimulation {
         String inputCsvFile = "s_s_s_02_TRADES.csv";
 
         // output for console-based simulation
-        //SimulationConsoleOutput output = new SimulationConsoleOutput(System.out);
+        SimulationConsoleOutput output = new SimulationConsoleOutput(System.out);
 
         // file-output-based simulation
         String outputDir = "./out/test/s-s-s/org/faustinelli/sss/simulation/";
         String outputCsvFile = outputDir + "s_s_s_02_TRADES.out.csv";
-        SimulationFileOutput output = new SimulationFileOutput(new PrintStream(outputCsvFile, "UTF-8"));
+        // NB - uncomment next line to write output to CSV file
+        //SimulationFileOutput output = new SimulationFileOutput(new PrintStream(outputCsvFile, "UTF-8"));
 
         new CsvReader(output).run(gbce, clock, stocks, inputCsvFile);
     }
