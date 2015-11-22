@@ -18,6 +18,7 @@ public class Simulation {
 
 
         ZonedDateTime januarySixth2010nineAM = ZonedDateTime.of(2010, 1, 6, 9, 0, 0, 0, ZoneId.systemDefault());
+        // distance between trades approx. 7 seconds
         RandomizedTradingClock clock = new RandomizedTradingClock(januarySixth2010nineAM, new Double(7.0));
         StockMarket gbce = StockMarket.instance(Trader.instance(clock));
 

@@ -29,7 +29,10 @@ public class CsvReader {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
-        ZonedDateTime nextCalculationTime = clock.lastTick().plusMinutes(new Long(20));
+
+        // every twenty minutes we calculate ticker prices, yields and stock market index
+        Long minutesBetweenAggregations = new Long(20);
+        ZonedDateTime nextCalculationTime = clock.lastTick().plusMinutes(minutesBetweenAggregations);
 
         try {
             br = new BufferedReader(new FileReader(file));
@@ -67,7 +70,7 @@ public class CsvReader {
                     output.println("*               GBCE all shares index: " + gbce.gbceAllSharesIndex(clock.lastTick()) + "             *");
                     output.println("******************************************************");
 
-                    nextCalculationTime = clock.lastTick().plusMinutes(new Long(20));
+                    nextCalculationTime = clock.lastTick().plusMinutes(minutesBetweenAggregations);
                 }
             }
 
