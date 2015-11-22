@@ -5,6 +5,7 @@ import org.faustinelli.sss.model.StockMarket;
 import org.faustinelli.sss.model.Trader;
 import org.faustinelli.sss.util.Amount;
 
+import java.io.PrintStream;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class LongSimulation {
 
-    public static void main(String[] args) throws  Exception {
+    public static void main(String[] args) throws Exception {
 
         ZonedDateTime januarySixth2010nineAM = ZonedDateTime.of(2010, 1, 6, 9, 0, 0, 0, ZoneId.systemDefault());
         // max distance between trades 0.8 secs
@@ -34,6 +35,17 @@ public class LongSimulation {
         gbce.recordDividend(stocks.get("PRE"), Amount.instance(10));
         gbce.recordDividend(stocks.get("TEA"), Amount.instance(3));
 
-        new CsvReader(new SimulationConsoleOutput(System.out)).run(gbce, clock, stocks, "s_s_s_02_TRADES.csv");
+        // datafile
+        String inputCsvFile = "s_s_s_02_TRADES.csv";
+
+        // output for console-based simulation
+        //SimulationConsoleOutput output = new SimulationConsoleOutput(System.out);
+
+        // file-output-based simulation
+        String outputDir = "./out/test/s-s-s/org/faustinelli/sss/simulation/";
+        String outputCsvFile = outputDir + "s_s_s_02_TRADES.out.csv";
+        SimulationFileOutput output = new SimulationFileOutput(new PrintStream(outputCsvFile, "UTF-8"));
+
+        new CsvReader(output).run(gbce, clock, stocks, inputCsvFile);
     }
 }

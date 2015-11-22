@@ -6,10 +6,6 @@ import org.faustinelli.sss.model.Trader;
 import org.faustinelli.sss.model.TradingClock;
 import org.faustinelli.sss.util.Amount;
 
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
