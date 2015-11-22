@@ -1,6 +1,6 @@
 # s-s-s
 
-Unit tests (JUnit 3) are to be found in:
+Unit tests (JUnit 3) ensure 100% code coverage and are to be found in:
 
  - `spec/org/faustinelli/sss/model`
  - `spec/org/faustinelli/sss/util`
